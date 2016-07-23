@@ -33,6 +33,7 @@ public class BodyCreator {
 		bodyDef.type = type;
 		bodyDef.position.set(new Vector2(position.x, position.y));
 		
+		
 		Body body = EntityManager.createBody(bodyDef, dimensions, worldKey);
 		
 		FixtureDef fixtureDef = new FixtureDef();
