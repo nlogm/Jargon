@@ -12,12 +12,10 @@ public class EntityManager {
 	
 	private static Array<Body> bodyList = new Array<Body>();
 	private static Array<Vector2> bodyDimensions = new Array<Vector2>();
-	
-	
-	
-	public static Body createBody(BodyDef b, Vector2 dimensions, int worldNum){
+		
+	public static Body createBody(BodyDef b, Vector2 dimensions, String worldKey){
 		try{
-			bodyList.add(WorldManager.worlds.get(worldNum).createBody(b));
+			bodyList.add(WorldManager.getWorld(worldKey).createBody(b));
 			bodyDimensions.add(dimensions);
 		}catch(Exception e){
 			Gdx.app.log("EntityManager", "Failed to add body to list");
@@ -25,7 +23,8 @@ public class EntityManager {
 		return bodyList.get(bodyList.size - 1);
 	}
 
-	public static void update(int num){
+	public static void update()
+	{
 		int tracker = 0;
 		for(Body currentBody : bodyList){
 			if(Sprite.class.isAssignableFrom(currentBody.getClass()) && currentBody.getUserData() != null){

@@ -52,11 +52,11 @@ public class Core extends ApplicationAdapter {
 		
 		
 		e = new BoxEntity(new Vector2(2.4f,2.5f), new Vector2(.1f, .1f), BodyType.StaticBody);
-		e.createBody(1);
+		e.createBody("one");
 		
 		e = new BoxEntity(new Vector2(3.2f,2.5f), new Vector2(.1f, .1f), BodyType.StaticBody);
-		e.createBody(num);
-		LightManager.setWorld(WorldManager.worlds.get(num));
+		e.createBody("one");
+		LightManager.setWorld(WorldManager.getWorld("one"));
 		LightCreator.createPointLight(new Vector2(3 , 3), Color.WHITE, 3, false);
 	}
 	int num = 0;
@@ -65,7 +65,7 @@ public class Core extends ApplicationAdapter {
 		//Synch physics
 		doPhysicsStep(Gdx.graphics.getDeltaTime() * WorldConstants.PHYSICS_SPEED);
 		//Update entities
-		EntityManager.update(num);
+		EntityManager.update();
 		
 		//Update everything with scaled property
 		camera.update();
@@ -96,12 +96,10 @@ public class Core extends ApplicationAdapter {
 		EntityManager.renderBodies(batch);
 		batch.end();
 		
-		
-		
 		LightManager.handler.render();
 		
 		//Render bodies in Box2DDebugRenderer
-		render.render(WorldManager.worlds.get(num), camera.combined);
+		render.render(WorldManager.getWorld("one"), camera.combined);
 		
 	}
 	
@@ -111,7 +109,7 @@ public class Core extends ApplicationAdapter {
 	    frameTime = Math.min(deltaTime, 0.25f);
 	    accumulator += frameTime;
 	    while (accumulator >= WorldConstants.TIME_STEP) {
-	       WorldManager.worlds.get(num).step(WorldConstants.TIME_STEP, WorldConstants.VELOCITY_ITERATIONS, WorldConstants.POSITION_ITERATIONS);
+	       WorldManager.getWorld("one").step(WorldConstants.TIME_STEP, WorldConstants.VELOCITY_ITERATIONS, WorldConstants.POSITION_ITERATIONS);
 	        accumulator -= WorldConstants.TIME_STEP;
 	    }
 	}

@@ -12,9 +12,9 @@ public class CircleEntity extends Entity{
 		super(positionInMeters, radius, type);
 	}
 	
-	public void createBody(int worldNum){
+	public void createBody(String worldKey){
 		
-		bodyObjects = BodyCreator.createAndGet(position, new Vector2(radius, radius), type, true, worldNum);
+		bodyObjects = BodyCreator.createAndGet(position, new Vector2(radius, radius), type, true, worldKey);
 		
 	}
 

@@ -26,14 +26,14 @@ public class BodyCreator {
 	 * @return the body created
 	 */
 	public static HashMap<String, Object> createAndGet(Vector2 position, Vector2 dimensions,
-			BodyType type, boolean isCircle, int worldNum){
+			BodyType type, boolean isCircle, String worldKey){
 		HashMap<String, Object> bodyObjectsHash = new HashMap<String, Object>();
 		
 		BodyDef bodyDef = new BodyDef();
 		bodyDef.type = type;
 		bodyDef.position.set(new Vector2(position.x, position.y));
 		
-		Body body = EntityManager.createBody(bodyDef, dimensions, worldNum);
+		Body body = EntityManager.createBody(bodyDef, dimensions, worldKey);
 		
 		FixtureDef fixtureDef = new FixtureDef();
 		Fixture fixture;
@@ -57,16 +57,12 @@ public class BodyCreator {
 			rectangle.dispose();
 		}
 		
-		
 		bodyObjectsHash.put(BodyReferences.BODY, body);
 		bodyObjectsHash.put(BodyReferences.BODY_DEF, bodyDef);
 		bodyObjectsHash.put(BodyReferences.FIXTURE, fixture);
 		bodyObjectsHash.put(BodyReferences.FIXTURE_DEF, fixtureDef);
 		
-		
 		return bodyObjectsHash;
-		
-		
 	}
 	
 	public static RevoluteJointDef createJoint(Body a, Body b, Vector2 anchorA, Vector2 anchorB){

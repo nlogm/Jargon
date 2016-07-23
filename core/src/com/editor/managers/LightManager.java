@@ -6,7 +6,7 @@ import box2dLight.RayHandler;
 
 public class LightManager {
 																		//Default
-	public static RayHandler handler = new RayHandler(WorldManager.worlds.get(0));
+	public static RayHandler handler = new RayHandler(WorldManager.getWorld("one"));
 	
 	public static void init(){
 		handler.setShadows(true);
