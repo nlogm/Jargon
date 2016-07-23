@@ -13,7 +13,6 @@ import com.editor.bodies.LightCreator;
 import com.editor.constants.Scaler;
 import com.editor.constants.WorldConstants;
 import com.editor.entity.BoxEntity;
-import com.editor.entity.JointedHuman;
 import com.editor.managers.EntityManager;
 import com.editor.managers.LightManager;
 import com.editor.managers.WorldManager;
@@ -28,7 +27,6 @@ public class Core extends ApplicationAdapter {
 	public Box2DDebugRenderer render;
 	public RayHandler handler;
 	public SpriteBatch batch;
-	private JointedHuman h;
 	BoxEntity e;
 	@Override
 	public void create () {
@@ -36,8 +34,6 @@ public class Core extends ApplicationAdapter {
 		camera.setToOrtho(false, Gdx.graphics.getWidth() / Scaler.PPM, Gdx.graphics.getHeight() / Scaler.PPM);
 		WorldManager.init();
 		LightManager.init();
-		//h = new JointedHuman(new Vector2(2.8f,4), new Vector2(.25f, 1));
-		//h.create();
 		batch = new SpriteBatch();
 		render = new Box2DDebugRenderer();
 		JointedEntity l = new JointedEntity("");
