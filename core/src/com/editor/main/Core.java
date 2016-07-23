@@ -3,12 +3,15 @@ package com.editor.main;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.physics.box2d.World;
+import com.editor.bodies.LightCreator;
 import com.editor.constants.Scaler;
 import com.editor.constants.WorldConstants;
 import com.editor.entity.BoxEntity;
@@ -32,38 +35,37 @@ public class Core extends ApplicationAdapter {
 	public void create () {
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, Gdx.graphics.getWidth() / Scaler.PPM, Gdx.graphics.getHeight() / Scaler.PPM);
+		WorldManager.init();
 		LightManager.init();
-
-		h = new JointedHuman(new Vector2(2.8f,4), new Vector2(.25f, 1));
-		h.create();
+		//h = new JointedHuman(new Vector2(2.8f,4), new Vector2(.25f, 1));
+		//h.create();
 		batch = new SpriteBatch();
 		render = new Box2DDebugRenderer();
 		
 		
+		
 		//ground
-		e = new BoxEntity(new Vector2(0,0), new Vector2(10, .1f), BodyType.StaticBody);
-		e.createBody();
-		e.addFixtureDefProperties(1, .3f, 0);
+		//e = new BoxEntity(new Vector2(0,0), new Vector2(10, .1f), BodyType.StaticBody);
+		//e.createBody();
+		//e.addFixtureDefProperties(1, .3f, 0);
 		
 		
 		
-		e = new BoxEntity(new Vector2(2.4f,1), new Vector2(.1f, .1f), BodyType.StaticBody);
-		e.createBody();
+		e = new BoxEntity(new Vector2(2.4f,2.5f), new Vector2(.1f, .1f), BodyType.StaticBody);
+		e.createBody(1);
 		
 		e = new BoxEntity(new Vector2(3.2f,2.5f), new Vector2(.1f, .1f), BodyType.StaticBody);
-		e.createBody();
-		
-		
+		e.createBody(num);
+		LightManager.setWorld(WorldManager.worlds.get(num));
+		LightCreator.createPointLight(new Vector2(3 , 3), Color.WHITE, 3, false);
 	}
+	int num = 0;
 	@Override
 	public void render () {
-		if(Gdx.input.isKeyJustPressed(Keys.SPACE))
-			WorldManager.disposeAllBodies();
 		//Synch physics
 		doPhysicsStep(Gdx.graphics.getDeltaTime() * WorldConstants.PHYSICS_SPEED);
-		
 		//Update entities
-		EntityManager.update();
+		EntityManager.update(num);
 		
 		//Update everything with scaled property
 		camera.update();
@@ -81,8 +83,11 @@ public class Core extends ApplicationAdapter {
 		Gdx.graphics.setTitle(Gdx.graphics.getFramesPerSecond() + "");
 		
 		//To be altered
-		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		
+		Gdx.gl.glEnable(GL20.GL_BLEND);
+		Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+		Gdx.gl.glClearColor(0, 0, 0, 0);
 		
 		
 		
@@ -91,10 +96,13 @@ public class Core extends ApplicationAdapter {
 		EntityManager.renderBodies(batch);
 		batch.end();
 		
+		
+		
 		LightManager.handler.render();
 		
 		//Render bodies in Box2DDebugRenderer
-		render.render(WorldManager.world, camera.combined);
+		render.render(WorldManager.worlds.get(num), camera.combined);
+		
 	}
 	
 	private float frameTime;
@@ -103,7 +111,7 @@ public class Core extends ApplicationAdapter {
 	    frameTime = Math.min(deltaTime, 0.25f);
 	    accumulator += frameTime;
 	    while (accumulator >= WorldConstants.TIME_STEP) {
-	       WorldManager.world.step(WorldConstants.TIME_STEP, WorldConstants.VELOCITY_ITERATIONS, WorldConstants.POSITION_ITERATIONS);
+	       WorldManager.worlds.get(num).step(WorldConstants.TIME_STEP, WorldConstants.VELOCITY_ITERATIONS, WorldConstants.POSITION_ITERATIONS);
 	        accumulator -= WorldConstants.TIME_STEP;
 	    }
 	}

@@ -17,15 +17,23 @@ import com.editor.managers.EntityManager;
 public class BodyCreator {
 	
 	
+	/**
+	 * Returns HashMap of bodies
+	 * @param position of body
+	 * @param dimensions of body
+	 * @param type of body
+	 * @param isCircle ...
+	 * @return the body created
+	 */
 	public static HashMap<String, Object> createAndGet(Vector2 position, Vector2 dimensions,
-			BodyType type, boolean isCircle){
+			BodyType type, boolean isCircle, int worldNum){
 		HashMap<String, Object> bodyObjectsHash = new HashMap<String, Object>();
 		
 		BodyDef bodyDef = new BodyDef();
 		bodyDef.type = type;
 		bodyDef.position.set(new Vector2(position.x, position.y));
 		
-		Body body = EntityManager.createBody(bodyDef, dimensions);
+		Body body = EntityManager.createBody(bodyDef, dimensions, worldNum);
 		
 		FixtureDef fixtureDef = new FixtureDef();
 		Fixture fixture;

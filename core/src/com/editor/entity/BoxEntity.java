@@ -15,9 +15,9 @@ public class BoxEntity extends Entity{
 		super(positionInMeters, dimensionsInMeteres, type);
 	}
 	
-	public void createBody(){
+	public void createBody(int worldNum){
 		
-		bodyObjects = BodyCreator.createAndGet(position, dimensions, type, false);
+		bodyObjects = BodyCreator.createAndGet(position, dimensions, type, false, worldNum);
 		
 	}
 	
