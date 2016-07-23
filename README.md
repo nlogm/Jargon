@@ -4,7 +4,7 @@
 JARGON stands for: Java Assisted, Retro Game, Opensource Namespace
 
 ### The Purpose
-The main purpose of JARGON is to give anyone the ability to create and design 2D games with a highly detailed editor. 
+The main purpose of JARGON is to give anyone the ability to create and design beautiful 2D games with a highly detailed editor. 
 
 ### How to Download & Run- Terminal
 1. `cd` into the directory of where you would like to download JARGON
