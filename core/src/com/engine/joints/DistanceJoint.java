@@ -48,13 +48,13 @@ public class DistanceJoint extends JointedEntity{
 		super.assignAttributes();
 		for(String key : jointAttributes.keySet()){
 			if(key.equals(JointedAttributes.DistanceAttributes.Damping_Ratio.name())){
-				((DistanceJointDef)joint).dampingRatio = ((float)jointAttributes.get(key));
+				((DistanceJointDef)joint).dampingRatio = ((Float)jointAttributes.get(key));
 				continue;
 			}else if(key.equals(JointedAttributes.DistanceAttributes.Frequency_Hz.name())){
-				((DistanceJointDef)joint).frequencyHz = ((float)jointAttributes.get(key));
+				((DistanceJointDef)joint).frequencyHz = ((Float)jointAttributes.get(key));
 				continue;
 			}else if(key.equals(JointedAttributes.DistanceAttributes.Length.name())){
-				((DistanceJointDef)joint).length = ((float)jointAttributes.get(key));
+				((DistanceJointDef)joint).length = ((Float)jointAttributes.get(key));
 				continue;
 			}else if(key.equals(JointedAttributes.DistanceAttributes.Local_Anchor_A.name())){
 				((DistanceJointDef)joint).localAnchorA.set(((Vector2)jointAttributes.get(key)));
