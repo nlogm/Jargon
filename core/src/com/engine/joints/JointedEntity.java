@@ -40,6 +40,11 @@ public class JointedEntity {
 		}
 	}
 	
+	public void seek(String... name1){
+		System.out.println(name1.toString());
+		System.out.println(name1.toString());
+	}
+	
 	
 	
 }
