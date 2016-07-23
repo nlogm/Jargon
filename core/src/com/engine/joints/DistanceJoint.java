@@ -42,7 +42,6 @@ public class DistanceJoint extends JointedEntity{
 		super.setAttribute(info, attribute);
 	}
 	
-	@SuppressWarnings("unchecked")	
 	@Override
 	public void assignAttributes() {
 		super.assignAttributes();
