@@ -4,11 +4,15 @@ import com.editor.constants.WorldConstants;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import box2dLight.RayHandler;
 import com.editor.managers.WorldManager;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 public class Layer
 {
 	private String name;
 	private boolean renderFlag;
+	private Array<Texture> texList;
+
 	private Box2DDebugRenderer dRenderer;
 	private OrthographicCamera camera;
 	private static RayHandler rayHandler;
@@ -17,6 +21,8 @@ public class Layer
 	public Layer(String name, WorldManager worldManager, OrthographicCamera camera)
 	{
 		renderFlag = false;
+		texList = new Array<Texture>();
+
 		this.dRenderer = new Box2DDebugRenderer();
 		this.camera = camera;
 		this.name = name;
