@@ -7,10 +7,10 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.editor.constants.BodyReferences;
-import com.editor.constants.Scaler;
-import com.editor.managers.EntityManager;
+import com.editor.managers.WorldManager;
 
 public class Entity {
 
@@ -95,4 +95,8 @@ public class Entity {
 	public Sprite getEntitySprite(){ return this.entitySprite;}
 	public BodyType getBodyType(){ return this.type;} 
 	public Body getBody(){ return ((Body)bodyObjects.get(BodyReferences.BODY));}
+
+	public void createBody(String worldHash) {
+		WorldManager.getWorld(worldHash).createBody(((BodyDef)(bodyObjects.get(BodyReferences.BODY_DEF))));
+	}
 }

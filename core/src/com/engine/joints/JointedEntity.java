@@ -3,15 +3,12 @@ package com.engine.joints;
 import java.util.HashMap;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.JointDef;
 import com.badlogic.gdx.utils.Array;
+import com.engine.joints.attributes.JointType;
 import com.engine.joints.attributes.JointedAttributes;
-import com.engine.joints.attributes.JointedAttributes.DistanceAttributes;
-import com.engine.joints.attributes.JointedAttributes.PrismaticAttributes;
-import com.engine.joints.attributes.JointedAttributes.PulleyAttributes;
-import com.engine.joints.attributes.JointedAttributes.RevoluteAttributes;
-import com.engine.joints.attributes.JointedAttributes.RopeAttributes;
 
 public class JointedEntity {
 
@@ -22,6 +19,7 @@ public class JointedEntity {
 	protected Array<String> jointIDs;
 	protected HashMap<String, Body> bodyList;
 	protected String jointID;
+	protected JointType jointType;
 
 	public JointedEntity(String id) {
 		this.jointID = id;
@@ -29,8 +27,10 @@ public class JointedEntity {
 	}
 
 	public void setAttribute(Object[] info, JointedAttributes.DistanceAttributes... attribute) {
+		int count = 0;
 		for (JointedAttributes.DistanceAttributes attr : attribute) {
-			jointAttributes.put(attr.name(), info);
+			//if(Vector2.class.isAssignableFrom(info))
+			jointAttributes.put(attr.name(), info[count++]);
 		}
 	}
 	
@@ -58,12 +58,26 @@ public class JointedEntity {
 		}
 	}
 	
+	public void addBodyA(Body bodyA){
+		joint.bodyA = bodyA;
+	}
+	public void addBodyB(Body bodyB){
+		joint.bodyB = bodyB;
+	}
+	public void isCollideConnected(boolean condition){
+		joint.collideConnected = condition;
+	}
+	
 	public void assignAttributes(){
 		
 	}
 	public void seek(String... name1) {
 		System.out.println(name1);
 		System.out.println(name1.toString());
+	}
+	
+	public JointDef getJointDef(){
+		return joint;
 	}
 
 }

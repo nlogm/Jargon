@@ -2,17 +2,22 @@ package com.engine.joints;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.joints.DistanceJointDef;
+import com.engine.joints.attributes.JointType;
 import com.engine.joints.attributes.JointedAttributes;
-import com.engine.joints.attributes.JointedAttributes.DistanceAttributes;
-import com.engine.joints.attributes.JointedAttributes.PrismaticAttributes;
 
 public class DistanceJoint extends JointedEntity{
 
 	public DistanceJoint(String id) {
 		super(id);
 		joint = new DistanceJointDef();
+		jointType = JointType.Distance;
 	}
 
+	
+	/**
+	 * @param attribute 's of joint
+	 * @param info , values of attributes
+	 */
 	@Override
 	public void setAttribute(Object[] info, JointedAttributes.DistanceAttributes... attribute) {
 		super.setAttribute(info, attribute);
@@ -42,12 +47,15 @@ public class DistanceJoint extends JointedEntity{
 		super.setAttribute(info, attribute);
 	}
 	
+	/**
+	 * Automatically assigns Object values to JointDef
+	 */
 	@Override
 	public void assignAttributes() {
 		super.assignAttributes();
 		for(String key : jointAttributes.keySet()){
 			if(key.equals(JointedAttributes.DistanceAttributes.Damping_Ratio.name())){
-				((DistanceJointDef)joint).dampingRatio = ((Float)jointAttributes.get(key));
+				((DistanceJointDef)joint).dampingRatio = ((Integer)jointAttributes.get(key));
 				continue;
 			}else if(key.equals(JointedAttributes.DistanceAttributes.Frequency_Hz.name())){
 				((DistanceJointDef)joint).frequencyHz = ((Float)jointAttributes.get(key));
@@ -56,10 +64,12 @@ public class DistanceJoint extends JointedEntity{
 				((DistanceJointDef)joint).length = ((Float)jointAttributes.get(key));
 				continue;
 			}else if(key.equals(JointedAttributes.DistanceAttributes.Local_Anchor_A.name())){
-				((DistanceJointDef)joint).localAnchorA.set(((Vector2)jointAttributes.get(key)));
+				((DistanceJointDef)joint).localAnchorA.set
+				(new Vector2(((Vector2)jointAttributes.get(key)).x, ((Vector2)jointAttributes.get(key)).y));
 				continue;
 			}else if(key.equals(JointedAttributes.DistanceAttributes.Local_Anchor_B.name())){
-				((DistanceJointDef)joint).localAnchorB.set(((Vector2)jointAttributes.get(key)));
+				((DistanceJointDef)joint).localAnchorB.set
+				(new Vector2(((Vector2)jointAttributes.get(key)).x, ((Vector2)jointAttributes.get(key)).y));
 				continue;
 			}
 				

@@ -18,6 +18,13 @@ public class Layer
 	private static RayHandler rayHandler;
 	private static WorldManager worldManager;
 
+	/**
+	 * 
+	 * HEY FUCKER!!!!!!!!!1
+	 * THE WORLDMANAGER IS STATIC I WILL KILL YOU FOR THIS SHIT
+	 * 
+	 * 
+	 */
 	public Layer(String name, WorldManager worldManager, OrthographicCamera camera)
 	{
 		renderFlag = false;
