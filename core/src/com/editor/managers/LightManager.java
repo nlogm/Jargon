@@ -11,7 +11,7 @@ public class LightManager {
 	
 	public static void init(){
 		handler.setShadows(true);
-		handler.setAmbientLight(0f);
+		handler.setAmbientLight(0.5f);
 		handler.diffuseBlendFunc.set(GL20.GL_DST_COLOR, GL20.GL_SRC_COLOR);
 		handler.setBlur(true);
 		
