@@ -1,5 +1,7 @@
 package com.editor.states;
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+
 /**
  * File: StateManager.java
  * Purpose: Used to manage what state is loaded on screen
@@ -17,12 +19,12 @@ public class StateManager
 	/**
 	 * Default Constructor 
 	 */
-	public StateManger(){ }
+	public StateManager(){ }
 
 	/**
 	 * Allows for the current state on screen to be changed. 
 	 */
-	public setState(State newState)
+	public void setState(State newState)
 	{
 		//if the first state is being loaded
 		if(currentState == null)
@@ -36,7 +38,7 @@ public class StateManager
 		else
 		{
 			//dispose old state 
-			oldSstate = currentState;
+			State oldState = currentState;
 			oldState.dispose();
 			oldState.hide();
 			

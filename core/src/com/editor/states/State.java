@@ -2,6 +2,7 @@ package com.editor.states;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.editor.managers.AssetManager;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 /**
  * File: State.java
@@ -72,7 +73,7 @@ public abstract class State
 	 */
 	public SUB_STATE getSubState()
 	{
-		return SUB_;
+		return currentSubState;
 	}
 
 	/**
