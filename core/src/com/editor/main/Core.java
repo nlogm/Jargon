@@ -2,6 +2,7 @@ package com.editor.main;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -105,10 +106,15 @@ public class Core extends ApplicationAdapter {
 		k = new BoxEntity(new Vector2(5f, .5f), new Vector2(.1f, .5f), BodyType.StaticBody);
 		k.createBody("one");
 		
-		e = new CircleEntity(new Vector2(.5f, 3f), .5f, BodyType.StaticBody);
+		e = new CircleEntity(new Vector2(1f, 3f), 1f, BodyType.StaticBody);
 		e.createBody("one");
-		c = LightCreator.createConeLight(new Vector2(3, 5), Color.RED, 1, false, -90, 45);
-		c.attachToBody(e.getBody());
+		float turn = 120 - 5;
+		c = LightCreator.createConeLight(new Vector2(3, 5), Color.RED, 2, false, -e.getBody().getAngle(), turn);
+		c.attachToBody(e.getBody(), 0, 0, 0);
+		ConeLight g = LightCreator.createConeLight(new Vector2(3, 5), Color.GREEN, 2, false, -e.getBody().getAngle(), turn);
+		g.attachToBody(e.getBody(), 0, 0, turn + 5);
+		ConeLight o = LightCreator.createConeLight(new Vector2(3, 5), Color.BLUE, 2, false, -e.getBody().getAngle(), turn);
+		o.attachToBody(e.getBody(), 0, 0, -turn - 5);
 		
 	}
 	ConeLight c;
@@ -139,10 +145,12 @@ public class Core extends ApplicationAdapter {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		Gdx.gl.glEnable(GL20.GL_BLEND);
-		Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+		Gdx.gl.glBlendFunc (GL20.GL_DST_COLOR, GL20.GL_ZERO);
 		Gdx.gl.glClearColor(0, 0, 0, 0);
+		
 
 		// Render bodies and lights
+		batch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 		batch.begin();
 		EntityManager.renderBodies(batch);
 		batch.end();
