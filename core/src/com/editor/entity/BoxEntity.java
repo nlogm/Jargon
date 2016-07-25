@@ -18,7 +18,7 @@ public class BoxEntity extends Entity{
 	public void createBody(String worldKey){
 		
 		bodyObjects = BodyCreator.createAndGet(position, dimensions, type, false, worldKey);
-		
+		assureFixtureData();
 	}
 	
 	@Override

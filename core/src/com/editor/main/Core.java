@@ -1,8 +1,5 @@
 package com.editor.main;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -15,13 +12,15 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.joints.DistanceJointDef;
 import com.editor.bodies.LightCreator;
-import com.editor.bodies.Test;
 import com.editor.constants.Scaler;
 import com.editor.constants.WorldConstants;
 import com.editor.entity.BoxEntity;
 import com.editor.entity.CircleEntity;
 import com.editor.entity.Entity;
 import com.editor.entity.Orb;
+import com.editor.entity.Player;
+import com.editor.listeners.CollisionReciever;
+import com.editor.listeners.InputReciever;
 import com.editor.managers.EntityManager;
 import com.editor.managers.LightManager;
 import com.editor.managers.WorldManager;
@@ -41,6 +40,8 @@ public class Core extends ApplicationAdapter {
 	public SpriteBatch batch;
 	Entity e,k;
 	private Orb orb;
+	private Player player;
+	private InputReciever input;
 	@Override
 	public void create() {
 		camera = new OrthographicCamera();
@@ -50,28 +51,11 @@ public class Core extends ApplicationAdapter {
 		batch = new SpriteBatch();
 		render = new Box2DDebugRenderer();
 		LightManager.setWorld(WorldManager.getWorld("one"));
-		Test t = new Test();
-		try {
-			Method m = t.getClass().getMethod("print", null);
-			m.invoke(render, null);
-		} catch (NoSuchMethodException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SecurityException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InvocationTargetException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		WorldManager.getWorld("one").setContactListener(new CollisionReciever());
 		testZone();
-		
+		player = new Player(new Vector2(1, 1));
+		input = new InputReciever(player);
+		Gdx.input.setInputProcessor(input);
 	}
 	
 	public void testZone(){
@@ -82,16 +66,8 @@ public class Core extends ApplicationAdapter {
 		e = new CircleEntity(new Vector2(3.34f - 2.5f, .5f), .2f, BodyType.DynamicBody);
 		e.createBody("one");
 		e.setDensity(1f);
-		float d = .5f;
-		c = LightCreator.createConeLight(new Vector2(3, 5), Color.RED, d, false, -90, 45);
-		c.attachToBody(e.getBody());
-		c = LightCreator.createConeLight(new Vector2(3, 5), Color.BLUE, d, false, -90, 90);
-		c.attachToBody(e.getBody());
-		c = LightCreator.createConeLight(new Vector2(3, 5), Color.GOLD, d, false, -90, 135);
-		c.attachToBody(e.getBody());
-		c = LightCreator.createConeLight(new Vector2(3, 5), Color.CYAN, d, false, -90, 180);
-		c.attachToBody(e.getBody());
-		
+		e = new BoxEntity(new Vector2(0, .1f), new Vector2(5f, .1f), BodyType.StaticBody);
+		e.createBody("one");
 		
 		k = new BoxEntity(new Vector2(3.2f - 2.5f, .1f), new Vector2(.5f, .1f), BodyType.StaticBody);
 		k.createBody("one");
@@ -111,34 +87,6 @@ public class Core extends ApplicationAdapter {
 		jj.assignAttributes();
 		WorldManager.getWorld("one").createJoint((DistanceJointDef)jj.getJointDef());
 		
-		e = new BoxEntity(new Vector2(0, 0), new Vector2(50f, .01f), BodyType.StaticBody);
-		e.createBody("one");
-		
-		k = new BoxEntity(new Vector2(2.89f - 2.5f, .75f), new Vector2(.1f, .95f), BodyType.StaticBody);
-		k.createBody("one");
-		k.setAngleDegrees(-30f);
-		//c = LightCreator.createConeLight(new Vector2(0, 4f), Color.GRAY, 10, false, -45, 45);
-		c = LightCreator.createConeLight(new Vector2(Gdx.graphics.getWidth() / Scaler.PPM, 4f), Color.GRAY,
-				10, false, 225, 45);
-		k = new BoxEntity(new Vector2(4.15f - 2.5f, .5f), new Vector2(.1f, .75f), BodyType.StaticBody);
-		k.createBody("one");
-		k.setAngleDegrees(-30f);
-		
-		k = new BoxEntity(new Vector2(5.76f, .5f), new Vector2(.1f, .5f), BodyType.StaticBody);
-		k.createBody("one");
-		k = new BoxEntity(new Vector2(5f, .5f), new Vector2(.1f, .5f), BodyType.StaticBody);
-		k.createBody("one");
-		
-		//Orb shit
-		orb = new Orb(3.5f, 2.5f, 1, BodyType.DynamicBody);
-		orb.init(8, Color.GREEN, Color.BLUE, Color.RED, Color.YELLOW, Color.MAGENTA, Color.LIME);
-		
-		Orb rb = new Orb(1f, 3f, 1, BodyType.StaticBody);
-		Color[] c = new Color[50];
-		for(int i = 0; i < 50; i++)
-			c[i] = new Color(MathUtils.random(), MathUtils.random(), MathUtils.random(), 1);
-		rb.init(10, c);
-		
 		
 	}
 	ConeLight c;
@@ -155,6 +103,7 @@ public class Core extends ApplicationAdapter {
 		camera.update();
 		batch.setProjectionMatrix(camera.combined);
 
+		player.update();
 		// camera.combined.cpy().scl(Scaler.PPM) deprecated. This accomplishes
 		// same thing.
 		LightManager.handler.setCombinedMatrix(camera);

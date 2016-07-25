@@ -11,11 +11,9 @@ public class CircleEntity extends Entity{
 	public CircleEntity(Vector2 positionInMeters, float radius, BodyType type) {
 		super(positionInMeters, radius, type);
 	}
-	
+	@Override
 	public void createBody(String worldKey){
-		
 		bodyObjects = BodyCreator.createAndGet(position, new Vector2(radius, radius), type, true, worldKey);
-		
 	}
 
 	@Override
