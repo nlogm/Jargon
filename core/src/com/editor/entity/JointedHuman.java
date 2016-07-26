@@ -25,7 +25,7 @@ public class JointedHuman {
 	}
 	
 	public void create(){
-		head = new CircleEntity(position, headRadius, type);
+		/*head = new CircleEntity(position, headRadius, type);
 		head.createBody();
 		
 		float torsoWidth = dimensions.x / 1.5f;
@@ -132,7 +132,7 @@ public class JointedHuman {
 		leftLegToBody.collideConnected = false;
 		leftLegToBody.localAnchorA.set(0, -armHeight / 1.4f);
 		leftLegToBody.localAnchorB.set(-torsoWidth + torsoWidth / 4, -torsoHeight);
-		WorldManager.world.createJoint(leftLegToBody);
+		WorldManager.world.createJoint(leftLegToBody);*/
 	}
 
 }
