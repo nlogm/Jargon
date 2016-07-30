@@ -1,23 +1,25 @@
 package com.editor.workspace.layers;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Tree;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
 import com.editor.lights.Light;
 import com.editor.managers.LightManager;
 import com.editor.managers.WorldManager;
+import com.editor.workspace.EditorConstants;
+
 
 /**
  * File: Layer.Java
  * Purpose: - A colleciton of data that is can be edited within Canvas.java
  *          - Layer.Node is a class that allows for the LayerTree in LayerPane.java gain nodes
- *
+ *          - TODO: MUST ADD BUTTON FUCNTIONALITY
  * Created by douglas on 7/26/16.
  * @author Douglas Rudolph
  */
@@ -26,31 +28,94 @@ public class Layer
     /**
      * Object that adds Nodes the LayerTree in LayerPane.java
      */
-    static class Node
+    public static class Node extends Tree.Node
     {
         /**
          * Layer.Node Constructor
          * Purpose: is called when a layer is added in LayerPane
-         * @param rootNode : name of the Node that represents the layer within the LayerList
          * @param name ; Name of the layer
          */
-        public Node(Tree.Node rootNode, String name)
+        public Node(String name)
         {
+            super(new Label(name, EditorConstants.uiskin));
             //scene 2d skin
-            Skin uiskin = new Skin(Gdx.files.internal("uiskin.json"));
 
             //lbls
-            Label imageLbl = new Label("Image", uiskin);
-            Label lightLbl = new Label("Light", uiskin);
-            Label bodyLbl = new Label("Body", uiskin);
+            Label imageLbl = new Label("Image", EditorConstants.uiskin);
+            Label lightLbl = new Label("Light", EditorConstants.uiskin);
+            Label bodyLbl = new Label("Body", EditorConstants.uiskin);
 
-            //btns
-            TextButton addImageBtn = new TextButton("+", uiskin);
-            TextButton addLightBtn = new TextButton("+", uiskin);
-            TextButton addBodyBtn = new TextButton("+", uiskin);
-            TextButton removeImageBtn = new TextButton("-", uiskin);
-            TextButton removeLightBtn = new TextButton("-", uiskin);
-            TextButton removeBodyBtn = new TextButton("-", uiskin);
+            //Initalze btns with text
+            TextButton addImageBtn = new TextButton("+", EditorConstants.uiskin);
+            TextButton addLightBtn = new TextButton("+", EditorConstants.uiskin);
+            TextButton addBodyBtn = new TextButton("+", EditorConstants.uiskin);
+            TextButton removeImageBtn = new TextButton("-", EditorConstants.uiskin);
+            TextButton removeLightBtn = new TextButton("-", EditorConstants.uiskin);
+            TextButton removeBodyBtn = new TextButton("-", EditorConstants.uiskin);
+            /**
+             * Adding event listeners for each button within every new layer
+             */
+
+            //
+            addImageBtn.addListener(new ClickListener(){
+
+                @Override
+                public void clicked(InputEvent e, float x, float y)
+                {
+
+                }
+
+            });
+
+            addLightBtn.addListener(new ClickListener(){
+
+                @Override
+                public void clicked(InputEvent e, float x, float y)
+                {
+
+                }
+
+            });
+
+            addBodyBtn.addListener(new ClickListener(){
+
+                @Override
+                public void clicked(InputEvent e, float x, float y)
+                {
+
+                }
+
+            });
+
+            removeImageBtn.addListener(new ClickListener(){
+
+                @Override
+                public void clicked(InputEvent e, float x, float y)
+                {
+
+                }
+
+            });
+
+            removeLightBtn.addListener(new ClickListener(){
+
+                @Override
+                public void clicked(InputEvent e, float x, float y)
+                {
+
+                }
+
+            });
+
+            removeBodyBtn.addListener(new ClickListener(){
+
+                @Override
+                public void clicked(InputEvent e, float x, float y)
+                {
+
+                }
+
+            });
 
             //Collection of tables that have the information that is stored within each child node
             //(Children Nodes: Image Node, Light Node, Body Node)
@@ -78,14 +143,11 @@ public class Layer
             Tree.Node bodyNode = new Tree.Node(bodyTable);
 
             //Store each child node with in the root node
-            rootNode = new Tree.Node(new Label(name, uiskin));
-            rootNode.add(imageNode);
-            rootNode.add(lightNode);
-            rootNode.add(bodyNode);
+            this.add(imageNode);
+            this.add(lightNode);
+            this.add(bodyNode);
         }
-
     }
-
 
     private String name;
     private boolean renderFlag;
@@ -157,17 +219,19 @@ public class Layer
 
     public void removeImage()
     {
-
+        //remove image here
         imgCount--;
     }
 
     public void removeBody()
     {
+        //remove body here
         bodyCount--;
     }
 
     public void removeLight()
     {
+        //remove light here
         lightCount--;
     }
 
