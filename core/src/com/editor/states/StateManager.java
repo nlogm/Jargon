@@ -17,7 +17,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
  */
 public class StateManager
 {
-<<<<<<< HEAD
 
     //Reference to current State on screen
     private static State currentState;

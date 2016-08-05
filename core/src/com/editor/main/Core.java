@@ -9,17 +9,19 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-import com.editor.bodies.LightCreator;
-import com.editor.constants.Scaler;
-import com.editor.constants.WorldConstants;
-import com.editor.entity.ChainEntity;
-import com.editor.entity.Entity;
-import com.editor.entity.Orb;
-import com.editor.entity.Player;
+import com.editor.box2D.bodies.LightCreator;
+import com.editor.box2D.constants.Scaler;
+import com.editor.box2D.constants.WorldConstants;
+import com.editor.box2D.entity.BoxEntity;
+import com.editor.box2D.entity.ChainEntity;
+import com.editor.box2D.entity.Entity;
+import com.editor.box2D.entity.Orb;
+import com.editor.box2D.entity.Player;
 import com.editor.listeners.CollisionReciever;
 import com.editor.listeners.InputReciever;
-import com.editor.managers.EntityManager;
-import com.editor.managers.WorldManager;
+import com.editor.box2D.EntityManager;
+import com.editor.box2D.LightManager;
+import com.editor.box2D.WorldManager;
 
 import box2dLight.ConeLight;
 import box2dLight.RayHandler;
@@ -35,39 +37,36 @@ public class Core extends ApplicationAdapter {
 	private Orb orb;
 	private Player player;
 	private InputReciever input;
+
 	@Override
 	public void create() {
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, Gdx.graphics.getWidth() / Scaler.PPM, Gdx.graphics.getHeight() / Scaler.PPM);
 		WorldManager.init();
-<<<<<<< HEAD
+
 		//LightManager.init();
 		//h = new JointedHuman(new Vector2(2.8f,4), new Vector2(.25f, 1));
 		//h.create();
 		batch = new SpriteBatch();
 		render = new Box2DDebugRenderer();
-		
-		
-		
+
 		//ground
 		//e = new BoxEntity(new Vector2(0,0), new Vector2(10, .1f), BodyType.StaticBody);
 		//e.createBody();
 		//e.addFixtureDefProperties(1, .3f, 0);
-		
-		
-		
+
 		e = new BoxEntity(new Vector2(2.4f,2.5f), new Vector2(.1f, .1f), BodyType.StaticBody);
-		e.createBody(1);
+		//e.createBody(1);
 		
 		e = new BoxEntity(new Vector2(3.2f,2.5f), new Vector2(.1f, .1f), BodyType.StaticBody);
-		e.createBody(num);
+		//e.createBody(num);
 		//LightManager.setWorld(WorldManager.get(num));
 		LightCreator.createPointLight(new Vector2(3 , 3), Color.WHITE, 3, false);
-=======
+
 		LightManager.init();
 		batch = new SpriteBatch();
 		render = new Box2DDebugRenderer();
-		LightManager.setWorld(WorldManager.getWorld("one"));
+		//LightManager.setWorld(WorldManager.getWorld("one"));
 		WorldManager.getWorld("one").setContactListener(new CollisionReciever());
 		testZone();
 		player = new Player(new Vector2(1, 1));
@@ -83,7 +82,6 @@ public class Core extends ApplicationAdapter {
 			e.addVertice(new Vector2(i, (float) (Math.sin(i) / 6)));
 		}
 		e.createBody("one");
->>>>>>> 7ac54244abe6e2c4d533adeb89e7279cd419187b
 	}
 	ConeLight c;
 	int num = 0;

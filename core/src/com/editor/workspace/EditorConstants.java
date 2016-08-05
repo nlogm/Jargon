@@ -9,5 +9,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 public class EditorConstants
 {
 
-    public static final Skin uiskin = new Skin(Gdx.files.internal("uiskin.json"));
+    public static final Skin defaultSkin = new Skin(Gdx.files.internal("uiskin.json"));
+
+    public static final String PROGRAM_DIRECTORY = "";
+
+    public static final String LEVEL_DIRECTOTRY = "";
+
 }

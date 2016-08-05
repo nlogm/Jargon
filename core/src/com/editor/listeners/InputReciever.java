@@ -2,8 +2,8 @@ package com.editor.listeners;
 
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
-import com.editor.constants.PlayerTuples;
-import com.editor.entity.Player;
+import com.editor.box2D.constants.PlayerTuples;
+import com.editor.box2D.entity.Player;
 
 public class InputReciever implements InputProcessor{
 

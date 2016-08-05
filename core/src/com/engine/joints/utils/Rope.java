@@ -1,13 +1,11 @@
 package com.engine.joints.utils;
 
 import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.badlogic.gdx.physics.box2d.joints.RopeJointDef;
 import com.badlogic.gdx.utils.Array;
-import com.editor.bodies.BodyCreator;
-import com.editor.constants.Scaler;
-import com.editor.managers.WorldManager;
+import com.editor.box2D.constants.Scaler;
+import com.editor.box2D.WorldManager;
 
 public class Rope {
 	
