@@ -1,22 +1,27 @@
 package com.editor.main;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.joints.DistanceJointDef;
 import com.editor.bodies.LightCreator;
+import com.editor.bodies.Test;
 import com.editor.constants.Scaler;
 import com.editor.constants.WorldConstants;
 import com.editor.entity.BoxEntity;
 import com.editor.entity.CircleEntity;
 import com.editor.entity.Entity;
+import com.editor.entity.Orb;
 import com.editor.managers.EntityManager;
 import com.editor.managers.LightManager;
 import com.editor.managers.WorldManager;
@@ -35,7 +40,7 @@ public class Core extends ApplicationAdapter {
 	public RayHandler handler;
 	public SpriteBatch batch;
 	Entity e,k;
-
+	private Orb orb;
 	@Override
 	public void create() {
 		camera = new OrthographicCamera();
@@ -45,8 +50,26 @@ public class Core extends ApplicationAdapter {
 		batch = new SpriteBatch();
 		render = new Box2DDebugRenderer();
 		LightManager.setWorld(WorldManager.getWorld("one"));
-		
-		
+		Test t = new Test();
+		try {
+			Method m = t.getClass().getMethod("print", null);
+			m.invoke(render, null);
+		} catch (NoSuchMethodException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SecurityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalArgumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		testZone();
 		
 	}
@@ -106,15 +129,16 @@ public class Core extends ApplicationAdapter {
 		k = new BoxEntity(new Vector2(5f, .5f), new Vector2(.1f, .5f), BodyType.StaticBody);
 		k.createBody("one");
 		
-		e = new CircleEntity(new Vector2(1f, 3f), 1f, BodyType.StaticBody);
-		e.createBody("one");
-		float turn = 120 - 5;
-		c = LightCreator.createConeLight(new Vector2(3, 5), Color.RED, 2, false, -e.getBody().getAngle(), turn);
-		c.attachToBody(e.getBody(), 0, 0, 0);
-		ConeLight g = LightCreator.createConeLight(new Vector2(3, 5), Color.GREEN, 2, false, -e.getBody().getAngle(), turn);
-		g.attachToBody(e.getBody(), 0, 0, turn + 5);
-		ConeLight o = LightCreator.createConeLight(new Vector2(3, 5), Color.BLUE, 2, false, -e.getBody().getAngle(), turn);
-		o.attachToBody(e.getBody(), 0, 0, -turn - 5);
+		//Orb shit
+		orb = new Orb(3.5f, 2.5f, 1, BodyType.DynamicBody);
+		orb.init(8, Color.GREEN, Color.BLUE, Color.RED, Color.YELLOW, Color.MAGENTA, Color.LIME);
+		
+		Orb rb = new Orb(1f, 3f, 1, BodyType.StaticBody);
+		Color[] c = new Color[50];
+		for(int i = 0; i < 50; i++)
+			c[i] = new Color(MathUtils.random(), MathUtils.random(), MathUtils.random(), 1);
+		rb.init(10, c);
+		
 		
 	}
 	ConeLight c;
@@ -164,6 +188,10 @@ public class Core extends ApplicationAdapter {
 
 	private float frameTime;
 
+	/**
+	 * Sync physics and frame rate 
+	 * @param deltaTime
+	 */
 	private void doPhysicsStep(float deltaTime) {
 		// fixed time step for all devices
 		frameTime = Math.min(deltaTime, 0.25f);
