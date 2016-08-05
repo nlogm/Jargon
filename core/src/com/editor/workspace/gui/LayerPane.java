@@ -9,7 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Tree;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.utils.Array;
 import com.editor.workspace.EditorConstants;
-import com.editor.workspace.layers.Layer;
+import com.editor.workspace.gui.layers.Layer;
 
 /**
  * File LayerPane.java
@@ -32,11 +32,12 @@ public class LayerPane
 
     public LayerPane(Stage stage)
     {
-        layerTree = new Tree(EditorConstants.uiskin);
+        layerTree = new Tree(EditorConstants.defaultSkin);
         layerTree.add(new Layer.Node("Layer One"));
-        layerWdo = new Window("Layers",EditorConstants.uiskin);
+        layerWdo = new Window("Layers",EditorConstants.defaultSkin);
         layerWdo.add(layerTree);
         layerWdo.setSize(Gdx.graphics.getWidth()/3, Gdx.graphics.getHeight()/2);
+        layerWdo.setPosition(Gdx.graphics.getWidth()*2/3,0);
         stage.addActor(layerWdo);
 
     }

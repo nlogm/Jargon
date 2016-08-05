@@ -5,8 +5,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.bootup.StartUp;
 import com.editor.states.StateManager;
-import com.editor.workspace.Workspace;
 
 /**
  * File: Main.java
@@ -17,9 +17,6 @@ import com.editor.workspace.Workspace;
  */
 public class Main extends ApplicationAdapter
 {
-
-    private Workspace workspace;
-
     //StateManagner reference
     private StateManager stateManager;
 
@@ -27,14 +24,11 @@ public class Main extends ApplicationAdapter
     private OrthographicCamera camera;
     private SpriteBatch spriteBatch;
 
-
     @Override
     public void create()
     {
-        workspace = new Workspace();
-
         stateManager = new StateManager();
-        stateManager.setState(workspace);
+        stateManager.setState(new StartUp());
 
         camera = new OrthographicCamera();
         spriteBatch = new SpriteBatch();
@@ -58,7 +52,5 @@ public class Main extends ApplicationAdapter
         stateManager.updateCurrentState(Gdx.graphics.getDeltaTime());
         stateManager.renderCurrentState(spriteBatch);
     }
-
-
 
 }

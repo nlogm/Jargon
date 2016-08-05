@@ -1,6 +1,6 @@
 package com.editor.managers;
 
-<<<<<<< HEAD
+
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 
