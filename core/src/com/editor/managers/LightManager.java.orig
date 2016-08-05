@@ -17,7 +17,8 @@ import box2dLight.RayHandler;
 public class LightManager
 {
 																		//Default
-	//private  static RayHandler handler = new RayHandler(WorldManager.worlds.get(0));
+<<<<<<< HEAD
+	//public static RayHandler handler = new RayHandler(WorldManager.worlds.get(0));
 
 	//HashMap of all the RayHandlers within the game
 	//Uses the same keys as the world they are associated with in WorldManager.java
@@ -25,14 +26,21 @@ public class LightManager
 
 	public LightManager(){}
 
+	public static void addRayHandler(String key, World world)
+	{
+		RayHandler handler= new RayHandler(world);
+		rayHandlerHash.put(key, handler);
+
+=======
 	public static RayHandler handler = new RayHandler(WorldManager.getWorld("one"));
 	
-	public static void init()
-	{
+	public static void init(){
 		handler.setShadows(true);
 		handler.setAmbientLight(0.5f);
 		handler.diffuseBlendFunc.set(GL20.GL_DST_COLOR, GL20.GL_SRC_COLOR);
 		handler.setBlur(true);
+		
+>>>>>>> 7ac54244abe6e2c4d533adeb89e7279cd419187b
 	}
 
 	public static RayHandler deleteRayHandler(String key)

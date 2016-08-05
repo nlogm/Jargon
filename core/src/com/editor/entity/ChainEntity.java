@@ -3,27 +3,25 @@ package com.editor.entity;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.editor.bodies.BodyCreator;
-import com.editor.constants.BodyReferences;
 
-public class BoxEntity extends Entity{
+public class ChainEntity extends Entity{
 
-	public BoxEntity(Vector2 positionInMeters, Vector2 dimensionsInMeteres, BodyType type) {
-		super(positionInMeters, dimensionsInMeteres, type);
+	public ChainEntity(BodyType type) {
+		super(type);
 	}
-	
-	public void createBody(String worldKey){
-		
-		bodyObjects = BodyCreator.createAndGet(position, dimensions, type, false, worldKey);
-		assureFixtureData();
-	}
+
 	
 	@Override
-	public void addFixtureDefProperties(float density, float friction, float restitution){
-		super.addFixtureDefProperties(density, friction, restitution);
+	public void createBody(String worldKey){
+		chainVerts = new Vector2[preLoadedVerts.size];
+		int i = 0;
+		for(Vector2 finalVertices : preLoadedVerts){
+			chainVerts[i] = finalVertices;
+			i++;
+		}
+		bodyObjects = BodyCreator.createChain(chainVerts, type, worldKey);
 	}
 
 	@Override
@@ -41,28 +39,30 @@ public class BoxEntity extends Entity{
 		super.attachNewSprite(internalPath);
 	}
 
+	/**
+	 * Not applicable for type 'Circle'
+	 */
 	@Override
+	@Deprecated
 	public void setSize(Vector2 dimensionsInMeters) {
 		super.setSize(dimensionsInMeters);
 	}
 
-	/**
-	 * Not applicable for type 'Circle'
-	 */
 	@Override
 	@Deprecated
 	public void setSize(float radiusInMeters) {
 		super.setSize(radiusInMeters);
 	}
 	
+
+	@Deprecated
+	public float getRadius(){ return this.radius;}
+	
 	/**
 	 * Not applicable for type 'Circle'
 	 */
 	@Override
 	@Deprecated
-	public float getRadius(){ return this.radius;}
-	
-	@Override
 	public Vector2 getDimensions(){ return this.dimensions;}
 	
 	@Override
@@ -70,5 +70,4 @@ public class BoxEntity extends Entity{
 	
 	@Override
 	public BodyType getBodyType(){ return this.type;} 
-
 }

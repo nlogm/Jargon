@@ -7,17 +7,21 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.utils.Array;
+import com.editor.entity.Entity;
 
 public class EntityManager {
 	
 	private static Array<Body> bodyList = new Array<Body>();
 	private static Array<Vector2> bodyDimensions = new Array<Vector2>();
+	private static Array<Entity> entityList = new Array<Entity>();
 	
-	
-	
-	public static Body createBody(BodyDef b, Vector2 dimensions, int worldNum){
+	public static void addEntity(Entity e){
+		entityList.add(e);
+	}
+		
+	public static Body createBody(BodyDef b, Vector2 dimensions, String worldKey){
 		try{
-			bodyList.add(WorldManager.worlds.get(worldNum).createBody(b));
+			bodyList.add(WorldManager.getWorld(worldKey).createBody(b));
 			bodyDimensions.add(dimensions);
 		}catch(Exception e){
 			Gdx.app.log("EntityManager", "Failed to add body to list");
@@ -25,7 +29,8 @@ public class EntityManager {
 		return bodyList.get(bodyList.size - 1);
 	}
 
-	public static void update(int num){
+	public static void update()
+	{
 		int tracker = 0;
 		for(Body currentBody : bodyList){
 			if(Sprite.class.isAssignableFrom(currentBody.getClass()) && currentBody.getUserData() != null){
@@ -52,7 +57,10 @@ public class EntityManager {
 				((Sprite)currentBody.getUserData()).draw(batch);
 			}
 		
-		
+	}
+	
+	public static Array<Entity> getEntities(){
+		return entityList;
 	}
 	
 	
