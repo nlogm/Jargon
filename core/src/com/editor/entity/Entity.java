@@ -10,7 +10,12 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.badlogic.gdx.physics.box2d.Fixture;
+import com.badlogic.gdx.utils.Array;
+import com.editor.bodies.BodyCreator;
 import com.editor.constants.BodyReferences;
+import com.editor.generation.EntityIDMaker;
+import com.editor.managers.EntityManager;
 import com.editor.managers.WorldManager;
 
 public class Entity {
@@ -23,7 +28,9 @@ public class Entity {
 	protected Sprite entitySprite;
 
 	protected HashMap<String, Object> bodyObjects = new HashMap<String, Object>();
-
+	protected boolean fixtureDataSet;
+	protected Vector2[] chainVerts;
+	protected Array<Vector2> preLoadedVerts = new Array<Vector2>();
 	/**
 	 * For rectangle or square bodies
 	 * 
@@ -38,7 +45,31 @@ public class Entity {
 		this.position = positionInMeters;
 		this.dimensions = dimensionsInMeters;
 		this.type = type;
+		EntityManager.addEntity(this);
 
+	}
+	
+	public Entity(BodyType type){
+		this.type = type;
+	}
+	
+	public void setChains(Vector2... chain){
+		
+		for(Vector2 vert : chain){
+			preLoadedVerts.add(vert);
+		}
+	}
+	
+	public void addVertice(Vector2...additionalVertices){
+		for(Vector2 vert : additionalVertices){
+			preLoadedVerts.add(vert);
+		}
+	}
+	
+	public Entity(Vector2 position){
+		this.position = position;
+		this.type = BodyType.DynamicBody;
+		EntityManager.addEntity(this);
 	}
 
 	/**
@@ -98,6 +129,12 @@ public class Entity {
 	public void setAngleRadian(float angleInRadians) {
 		((Body) (bodyObjects.get(BodyReferences.BODY))).setTransform(position, angleInRadians);
 	}
+	
+	public void setFixtureData(boolean isTriggerable){
+		((Fixture) (bodyObjects.get(BodyReferences.FIXTURE))).setUserData(isTriggerable + "" + EntityIDMaker.generate());
+		fixtureDataSet = true;
+		System.out.println("ID of " + EntityManager.getEntities().size + ": " + ((Fixture) (bodyObjects.get(BodyReferences.FIXTURE))).getUserData());
+	}
 
 	public void setSize(Vector2 dimensionsInMeters) {
 		this.dimensions = dimensionsInMeters;
@@ -105,6 +142,10 @@ public class Entity {
 
 	public void setSize(float radiusInMeters) {
 		this.dimensions.x = radiusInMeters;
+	}
+	
+	public void trigger(){
+		System.out.println("trigger activated");
 	}
 
 	public float getRadius() {
@@ -126,8 +167,15 @@ public class Entity {
 	public Body getBody() {
 		return ((Body) bodyObjects.get(BodyReferences.BODY));
 	}
-
+	public void assureFixtureData(){
+		if(!fixtureDataSet)
+			((Fixture) (bodyObjects.get(BodyReferences.FIXTURE))).setUserData(Boolean.toString(false) + "~" + EntityIDMaker.generate());
+	}
 	public void createBody(String worldHash) {
 		WorldManager.getWorld(worldHash).createBody(((BodyDef) (bodyObjects.get(BodyReferences.BODY_DEF))));
+	}
+	
+	public void createBody(Vector2[] vertices, String worldKey){
+		WorldManager.getWorld(worldKey).createBody(((BodyDef) (bodyObjects.get(BodyReferences.BODY_DEF))));
 	}
 }

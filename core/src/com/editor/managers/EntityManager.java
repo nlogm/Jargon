@@ -7,11 +7,17 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.utils.Array;
+import com.editor.entity.Entity;
 
 public class EntityManager {
 	
 	private static Array<Body> bodyList = new Array<Body>();
 	private static Array<Vector2> bodyDimensions = new Array<Vector2>();
+	private static Array<Entity> entityList = new Array<Entity>();
+	
+	public static void addEntity(Entity e){
+		entityList.add(e);
+	}
 		
 	public static Body createBody(BodyDef b, Vector2 dimensions, String worldKey){
 		try{
@@ -51,7 +57,10 @@ public class EntityManager {
 				((Sprite)currentBody.getUserData()).draw(batch);
 			}
 		
-		
+	}
+	
+	public static Array<Entity> getEntities(){
+		return entityList;
 	}
 	
 	
