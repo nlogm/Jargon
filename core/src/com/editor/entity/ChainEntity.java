@@ -6,15 +6,22 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.editor.bodies.BodyCreator;
 
-public class CircleEntity extends Entity{
+public class ChainEntity extends Entity{
 
-	public CircleEntity(Vector2 positionInMeters, float radius, BodyType type) {
-		super(positionInMeters, radius, type);
+	public ChainEntity(BodyType type) {
+		super(type);
 	}
+
 	
 	@Override
 	public void createBody(String worldKey){
-		bodyObjects = BodyCreator.createAndGet(position, new Vector2(radius, radius), type, true, worldKey);
+		chainVerts = new Vector2[preLoadedVerts.size];
+		int i = 0;
+		for(Vector2 finalVertices : preLoadedVerts){
+			chainVerts[i] = finalVertices;
+			i++;
+		}
+		bodyObjects = BodyCreator.createChain(chainVerts, type, worldKey);
 	}
 
 	@Override
@@ -42,12 +49,13 @@ public class CircleEntity extends Entity{
 	}
 
 	@Override
+	@Deprecated
 	public void setSize(float radiusInMeters) {
 		super.setSize(radiusInMeters);
 	}
 	
 
-	
+	@Deprecated
 	public float getRadius(){ return this.radius;}
 	
 	/**
@@ -62,6 +70,4 @@ public class CircleEntity extends Entity{
 	
 	@Override
 	public BodyType getBodyType(){ return this.type;} 
-
-
 }

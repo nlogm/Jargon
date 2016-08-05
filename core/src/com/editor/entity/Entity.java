@@ -11,6 +11,8 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Fixture;
+import com.badlogic.gdx.utils.Array;
+import com.editor.bodies.BodyCreator;
 import com.editor.constants.BodyReferences;
 import com.editor.generation.EntityIDMaker;
 import com.editor.managers.EntityManager;
@@ -27,7 +29,8 @@ public class Entity {
 
 	protected HashMap<String, Object> bodyObjects = new HashMap<String, Object>();
 	protected boolean fixtureDataSet;
-	
+	protected Vector2[] chainVerts;
+	protected Array<Vector2> preLoadedVerts = new Array<Vector2>();
 	/**
 	 * For rectangle or square bodies
 	 * 
@@ -44,6 +47,23 @@ public class Entity {
 		this.type = type;
 		EntityManager.addEntity(this);
 
+	}
+	
+	public Entity(BodyType type){
+		this.type = type;
+	}
+	
+	public void setChains(Vector2... chain){
+		
+		for(Vector2 vert : chain){
+			preLoadedVerts.add(vert);
+		}
+	}
+	
+	public void addVertice(Vector2...additionalVertices){
+		for(Vector2 vert : additionalVertices){
+			preLoadedVerts.add(vert);
+		}
 	}
 	
 	public Entity(Vector2 position){
@@ -153,5 +173,9 @@ public class Entity {
 	}
 	public void createBody(String worldHash) {
 		WorldManager.getWorld(worldHash).createBody(((BodyDef) (bodyObjects.get(BodyReferences.BODY_DEF))));
+	}
+	
+	public void createBody(Vector2[] vertices, String worldKey){
+		WorldManager.getWorld(worldKey).createBody(((BodyDef) (bodyObjects.get(BodyReferences.BODY_DEF))));
 	}
 }

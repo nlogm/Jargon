@@ -2,20 +2,15 @@ package com.editor.main;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-import com.badlogic.gdx.physics.box2d.joints.DistanceJointDef;
-import com.editor.bodies.LightCreator;
 import com.editor.constants.Scaler;
 import com.editor.constants.WorldConstants;
-import com.editor.entity.BoxEntity;
-import com.editor.entity.CircleEntity;
+import com.editor.entity.ChainEntity;
 import com.editor.entity.Entity;
 import com.editor.entity.Orb;
 import com.editor.entity.Player;
@@ -24,9 +19,6 @@ import com.editor.listeners.InputReciever;
 import com.editor.managers.EntityManager;
 import com.editor.managers.LightManager;
 import com.editor.managers.WorldManager;
-import com.engine.joints.DistanceJoint;
-import com.engine.joints.JointedEntity;
-import com.engine.joints.attributes.JointedAttributes.DistanceAttributes;
 
 import box2dLight.ConeLight;
 import box2dLight.RayHandler;
@@ -54,40 +46,18 @@ public class Core extends ApplicationAdapter {
 		WorldManager.getWorld("one").setContactListener(new CollisionReciever());
 		testZone();
 		player = new Player(new Vector2(1, 1));
+		player.setFriction(0.1f);
 		input = new InputReciever(player);
 		Gdx.input.setInputProcessor(input);
 	}
 	
 	public void testZone(){
-		JointedEntity jj = new DistanceJoint("");
-		JointedEntity l = new JointedEntity("");
-		l.seek("one, ", " two, " + " three");
-
-		e = new CircleEntity(new Vector2(3.34f - 2.5f, .5f), .2f, BodyType.DynamicBody);
+	
+		e = new ChainEntity(BodyType.StaticBody);
+		for(float i = -10; i < 10; i+= .1f){
+			e.addVertice(new Vector2(i, (float) (Math.sin(i) / 6)));
+		}
 		e.createBody("one");
-		e.setDensity(1f);
-		e = new BoxEntity(new Vector2(0, .1f), new Vector2(5f, .1f), BodyType.StaticBody);
-		e.createBody("one");
-		
-		k = new BoxEntity(new Vector2(3.2f - 2.5f, .1f), new Vector2(.5f, .1f), BodyType.StaticBody);
-		k.createBody("one");
-		k.setAngleDegrees(-30);
-		jj.addBodyA(k.getBody());
-		
-		k = new BoxEntity(new Vector2(3.34f - 2.5f, .3f), new Vector2(.5f, .1f), BodyType.DynamicBody);
-		k.createBody("one");
-		k.setAngleDegrees(-30);
-		
-		jj.addBodyB(k.getBody());
-		Object[] bods = {
-			new Vector2(0,0), new Vector2(0,0), 1f, 2.5f, 0
-		};
-		jj.setAttribute(bods, DistanceAttributes.Local_Anchor_A, DistanceAttributes.Local_Anchor_B,
-				DistanceAttributes.Length, DistanceAttributes.Frequency_Hz, DistanceAttributes.Damping_Ratio);
-		jj.assignAttributes();
-		WorldManager.getWorld("one").createJoint((DistanceJointDef)jj.getJointDef());
-		
-		
 	}
 	ConeLight c;
 	int num = 0;
@@ -101,6 +71,7 @@ public class Core extends ApplicationAdapter {
 
 		// Update everything with scaled property
 		camera.update();
+		camera.position.set(player.getBody().getPosition(), 0);
 		batch.setProjectionMatrix(camera.combined);
 
 		player.update();
