@@ -32,7 +32,7 @@ public class StartUp extends State
         });
 
         TextButton LoadLevelSelectionBtn = new TextButton("Level Selection", EditorConstants.defaultSkin);
-        LoadLevelSelectionBtn.setPosition(Gdx.graphics.getWidth()/2, Gdx.graphics.getWidth()/2);
+        LoadLevelSelectionBtn.setPosition(Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2);
         LoadLevelSelectionBtn.addListener(new ClickListener()
         {
             @Override
