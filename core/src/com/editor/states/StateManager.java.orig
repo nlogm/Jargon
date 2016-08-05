@@ -71,3 +71,58 @@ public class StateManager
     }
 
 }
+=======
+	
+	//Reference to current State on screen
+	private static State currentState;
+	
+	/**
+	 * Default Constructor 
+	 */
+	public StateManager(){ }
+
+	/**
+	 * Allows for the current state on screen to be changed. 
+	 */
+	public void setState(State newState)
+	{
+		//if the first state is being loaded
+		if(currentState == null)
+		{
+			//load the first state
+			currentState = newState;
+			currentState.create();
+		}
+
+		//otherwise, if there is already a state loaded to the screen
+		else
+		{
+			//dispose old state 
+			State oldState = currentState;
+			oldState.dispose();
+			oldState.hide();
+			
+			//load new state
+			currentState = newState;
+			currentState.create();
+		}
+	}
+
+	/**
+	 * Updates currentState
+	 */
+	public void updateCurrentState(float delta)
+	{
+		currentState.update(delta);
+	}
+
+	/**
+	 * Renders currentState
+	 */
+	public void renderCurrentState(SpriteBatch spriteBatch)
+	{
+		currentState.render(spriteBatch);
+	}
+	
+}
+>>>>>>> 7ac54244abe6e2c4d533adeb89e7279cd419187b

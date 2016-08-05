@@ -2,14 +2,20 @@ package com.editor.main;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+<<<<<<< HEAD
 import com.badlogic.gdx.graphics.Color;
+=======
+>>>>>>> 7ac54244abe6e2c4d533adeb89e7279cd419187b
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+<<<<<<< HEAD
 import com.editor.bodies.LightCreator;
+=======
+>>>>>>> 7ac54244abe6e2c4d533adeb89e7279cd419187b
 import com.editor.constants.Scaler;
 import com.editor.constants.WorldConstants;
 import com.editor.entity.ChainEntity;
@@ -99,6 +105,18 @@ public class Core extends ApplicationAdapter {
 		camera.update();
 		camera.position.set(player.getBody().getPosition(), 0);
 		batch.setProjectionMatrix(camera.combined);
+<<<<<<< HEAD
+		
+		//camera.combined.cpy().scl(Scaler.PPM) deprecated. This accomplishes same thing.
+		//LightManager.handler.setCombinedMatrix(camera);
+		
+		//Update and handle exceptions in lights
+		//LightManager.handler.update();
+		
+		
+		
+		//Set title to FPS
+=======
 
 		player.update();
 		// camera.combined.cpy().scl(Scaler.PPM) deprecated. This accomplishes
@@ -109,6 +127,7 @@ public class Core extends ApplicationAdapter {
 		LightManager.handler.update();
 
 		// Set title to FPS
+>>>>>>> 7ac54244abe6e2c4d533adeb89e7279cd419187b
 		Gdx.graphics.setTitle(Gdx.graphics.getFramesPerSecond() + "");
 
 		// To be altered
@@ -124,11 +143,23 @@ public class Core extends ApplicationAdapter {
 		batch.begin();
 		EntityManager.renderBodies(batch);
 		batch.end();
+<<<<<<< HEAD
+		
+		
+		
+		//LightManager.handler.render();
+		
+		//Render bodies in Box2DDebugRenderer
+		render.render(WorldManager.worlds.get(num), camera.combined);
+		
+=======
 
 		LightManager.handler.render();
 
 		// Render bodies in Box2DDebugRenderer
 		render.render(WorldManager.getWorld("one"), camera.combined);
+
+>>>>>>> 7ac54244abe6e2c4d533adeb89e7279cd419187b
 	}
 
 	private float frameTime;
