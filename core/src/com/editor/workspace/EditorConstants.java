@@ -5,6 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 /**
  * Created by douglas on 7/30/16.
+ * @author Luke Roche :)
  */
 public class EditorConstants
 {

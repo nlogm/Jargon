@@ -22,6 +22,9 @@ public class LightManager
 
 	//HashMap of all the RayHandlers within the game
 	//Uses the same keys as the world they are associated with in WorldManager.java
+	
+	// this is fucking retarded we need one rayhandler and just change the world
+	// to render to
 	private static HashMap<String, RayHandler> rayHandlerHash = new HashMap<String, RayHandler>();
 
 	public LightManager(){}
@@ -42,8 +45,14 @@ public class LightManager
 	}
 
 	//do we really need this?
-	public static void update(){}
 	
+	///Yes?! How else will the light map work?!
+	public static void update(){
+		handler.update();
+	}
+	
+	//Why the fuck would they change the handler like this
+	//if they have the handler and the world we dont need a function for it
 	public static void setWorld(RayHandler handler, World world){
 		handler.setWorld(world);
 	}

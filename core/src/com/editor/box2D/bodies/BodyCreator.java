@@ -12,8 +12,9 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
-import com.editor.box2D.constants.BodyReferences;
 import com.editor.box2D.EntityManager;
+import com.editor.box2D.WorldManager;
+import com.editor.box2D.constants.BodyReferences;
 
 public class BodyCreator {
 
@@ -30,7 +31,7 @@ public class BodyCreator {
 	 *            ...
 	 * @return the body created
 	 */
-	public static HashMap<String, Object> createAndGet(Vector2 position, Vector2 dimensions, BodyType type,
+	public static HashMap<String, Object> createAndGetEntity(Vector2 position, Vector2 dimensions, BodyType type,
 			boolean isCircle, String worldKey) {
 		HashMap<String, Object> bodyObjectsHash = new HashMap<String, Object>();
 
@@ -70,6 +71,26 @@ public class BodyCreator {
 		return bodyObjectsHash;
 	}
 
+	public static Body createBody(float x, float y, float width, float height, BodyType type){
+		BodyDef bodyDef = new BodyDef();
+		bodyDef.type = type;
+		bodyDef.position.set(new Vector2(x, y));
+
+		Body body = WorldManager.getWorld("one").createBody(bodyDef);
+		
+		PolygonShape shape = new PolygonShape();
+		shape.setAsBox(width, height);
+				
+		FixtureDef fixtureDef = new FixtureDef();
+		fixtureDef.shape  = shape;
+		fixtureDef.density = .1f;
+		fixtureDef.friction = .3f;
+		fixtureDef.restitution = 0;
+		Fixture fixture = body.createFixture(fixtureDef);
+		
+		return body;
+	}
+	
 	public static HashMap<String, Object> createChain(Vector2[] vertices, BodyType type, String worldKey) {
 		HashMap<String, Object> bodyObjectsHash = new HashMap<String, Object>();
 

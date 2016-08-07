@@ -1,42 +1,85 @@
 package com.engine.joints.utils;
 
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.badlogic.gdx.physics.box2d.joints.RopeJointDef;
 import com.badlogic.gdx.utils.Array;
-import com.editor.box2D.constants.Scaler;
 import com.editor.box2D.WorldManager;
+import com.editor.box2D.bodies.BodyCreator;
+
+import box2dLight.ConeLight;
+import box2dLight.PointLight;
 
 public class Rope {
-	
-public void create(float length, float ropeLength) {
-		Array<Body> bodies = new Array<Body>();
-		//bodies.add(BodyCreator.createAndGet(WorldManager.getWorld("one"), 5, 5, length * 8, length / 2, BodyType.StaticBody, 0,
-			//	0, 0, "RopeMain"));
 
+	private Vector2 position;
+	private Array<Body> bodies;
+	public Rope(float topX, float topY) {
+		position = new Vector2(topX, topY);
+	}
+
+	public void create(float ropeLength, float angularDamping, float linearDamping) {
+		float length = .015f;
+		float widthToHeightRatio = 2;
+		bodies = new Array<Body>();
+		//anchor
+		bodies.add(BodyCreator.createBody(position.x, position.y, length, length / widthToHeightRatio, BodyType.StaticBody));
+		
+		
 		for (int i = 1; i < ropeLength; i++) {
-		//	bodies.add(BodyCreator.createBox(WorldManager.getWorld("one"), 5, 5 - (((length * 2) / Scaler.PPM) * i), length,
-			//		length * 2, BodyType.DynamicBody, .0001f, 0, 0, "RopeBody" + i));
+			bodies.add(BodyCreator.createBody(position.x, position.y - (length * widthToHeightRatio * i), length, length * widthToHeightRatio,
+					BodyType.DynamicBody));
+			bodies.get(bodies.size - 1).setAngularDamping(angularDamping);
+			bodies.get(bodies.size - 1).setLinearDamping(linearDamping);
 			
 			RopeJointDef rDef = new RopeJointDef();
 			rDef.bodyA = bodies.get(0);
 			rDef.bodyB = bodies.get(i);
-			rDef.collideConnected = true;
-			rDef.maxLength = i * (length / 4) / Scaler.PPM * 10;
-			System.out.println("legnth: " + i * (length / 4) / Scaler.PPM * 10);
-			System.out.println("legnth working: " + i * 0.05f);
-			rDef.localAnchorA.set(0, -((length) / Scaler.PPM));
-			rDef.localAnchorB.set(0, ((length) / Scaler.PPM));
+			
+			rDef.collideConnected = false;
+			
+			rDef.maxLength = i * (length * widthToHeightRatio * 2);
+			
+			rDef.localAnchorA.set(0, -((length * widthToHeightRatio)));
+			rDef.localAnchorB.set(0, ((length * widthToHeightRatio)));
+			
 			WorldManager.getWorld("one").createJoint(rDef);
 
 			RevoluteJointDef jDef = new RevoluteJointDef();
 			jDef.bodyA = bodies.get(i - 1);
 			jDef.bodyB = bodies.get(i);
-			jDef.localAnchorA.set(0, -((length) / Scaler.PPM));
-			jDef.localAnchorB.set(0, ((length) / Scaler.PPM));
+			jDef.collideConnected = false;
+			jDef.localAnchorA.set(0, -((length * widthToHeightRatio)));
+			jDef.localAnchorB.set(0, ((length * widthToHeightRatio)));
 			WorldManager.getWorld("one").createJoint(jDef);
 		}
 	}
 
-
+	
+	/**
+	 * -1 to attach to end
+	 * @param light
+	 * @param index
+	 */
+	public void attachLight(PointLight light, int index){
+		if(index >= 0)
+			light.attachToBody(bodies.get(0));
+		else
+			light.attachToBody(bodies.get(bodies.size - 1));
+	}
+	
+	/**
+	 * -1 to attach to end
+	 * @param light
+	 * @param index
+	 */
+	public void attachLight(ConeLight light, int index, float angleOffset){
+		if(index >= 0)
+			light.attachToBody(bodies.get(0), 0, 0, angleOffset);
+		else
+			light.attachToBody(bodies.get(bodies.size - 1), 0, 0, angleOffset);
+	}
+	
 }

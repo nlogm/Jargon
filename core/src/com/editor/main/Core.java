@@ -1,5 +1,7 @@
 package com.editor.main;
 
+import java.util.StringTokenizer;
+
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -9,6 +11,9 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.editor.box2D.EntityManager;
+import com.editor.box2D.LightManager;
+import com.editor.box2D.WorldManager;
 import com.editor.box2D.bodies.LightCreator;
 import com.editor.box2D.constants.Scaler;
 import com.editor.box2D.constants.WorldConstants;
@@ -19,9 +24,7 @@ import com.editor.box2D.entity.Orb;
 import com.editor.box2D.entity.Player;
 import com.editor.listeners.CollisionReciever;
 import com.editor.listeners.InputReciever;
-import com.editor.box2D.EntityManager;
-import com.editor.box2D.LightManager;
-import com.editor.box2D.WorldManager;
+import com.engine.joints.utils.Rope;
 
 import box2dLight.ConeLight;
 import box2dLight.RayHandler;
@@ -37,7 +40,8 @@ public class Core extends ApplicationAdapter {
 	private Orb orb;
 	private Player player;
 	private InputReciever input;
-
+	ConeLight l1, l2;
+	Rope r,r2;
 	@Override
 	public void create() {
 		camera = new OrthographicCamera();
@@ -61,7 +65,7 @@ public class Core extends ApplicationAdapter {
 		e = new BoxEntity(new Vector2(3.2f,2.5f), new Vector2(.1f, .1f), BodyType.StaticBody);
 		//e.createBody(num);
 		//LightManager.setWorld(WorldManager.get(num));
-		LightCreator.createPointLight(new Vector2(3 , 3), Color.WHITE, 3, false);
+		
 
 		LightManager.init();
 		batch = new SpriteBatch();
@@ -73,29 +77,58 @@ public class Core extends ApplicationAdapter {
 		player.setFriction(0.1f);
 		input = new InputReciever(player);
 		Gdx.input.setInputProcessor(input);
+		StringTokenizer t;
+		t = new StringTokenizer("Anal, Beads");
+		System.out.println(t.nextToken(" "));
+		
 	}
 	
 	public void testZone(){
 	
 		e = new ChainEntity(BodyType.StaticBody);
-		for(float i = -10; i < 10; i+= .1f){
-			e.addVertice(new Vector2(i, (float) (Math.sin(i) / 6)));
+		for(float i = -10; i < 20; i+= .1f){
+			e.addVertice(new Vector2(i, (float) (Math.sin(i) / 12)));
 		}
 		e.createBody("one");
+		
+		r = new Rope(1, 5);
+		r.create(5, 1000, 1);
+		l1 = LightCreator.createConeLight(new Vector2(3 , 3), Color.DARK_GRAY, 25f, false, 15, 15);
+		l1.setColor(l1.getColor().r, l1.getColor().g, l1.getColor().b, 0);
+		r.attachLight(l1, -1, -90);
+		
+		r2 = new Rope(1.5f, 5);
+		r2.create(5, 1000, 1);
+		l2 = LightCreator.createConeLight(new Vector2(2 , 4), Color.GREEN, 100f, false, 15, 360);
+		l2.setColor(l2.getColor().r, l2.getColor().g, l2.getColor().b, 0);
+		r.attachLight(l2, -1, -90);
+		
+		
 	}
 	ConeLight c;
 	int num = 0;
-
+	float el;
 	@Override
 	public void render() {
 		// Synch physics
 		doPhysicsStep(Gdx.graphics.getDeltaTime() * WorldConstants.PHYSICS_SPEED);
 		// Update entities
 		EntityManager.update();
+		el += Gdx.graphics.getDeltaTime();
 
+		
+		if(el > 3 && l2.getConeDegree()  > 5 && el < 7){
+			l2.setColor(l2.getColor().r, l2.getColor().g, l2.getColor().b, el);
+			l2.setConeDegree(360 - el * 100);
+			l1.setColor(l1.getColor().r, l1.getColor().g, l1.getColor().b, l1.getColor().a - el / 50);
+		
+		}else{
+			l1.setColor(l1.getColor().r, l1.getColor().g, l1.getColor().b, el / 2);
+		}
 		// Update everything with scaled property
 		camera.update();
-		camera.position.set(player.getBody().getPosition(), 0);
+		camera.position.set(player.getBody().getPosition().x, player.getBody().getPosition().y + 1, 0);
+		//camera.position.set(player.getBody().getPosition(), 0);
 		batch.setProjectionMatrix(camera.combined);
 
 		player.update();

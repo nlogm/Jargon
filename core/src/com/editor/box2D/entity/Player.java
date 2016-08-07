@@ -23,7 +23,7 @@ public class Player extends Entity{
 	}
 	
 	public void createBody(){
-		bodyObjects = BodyCreator.createAndGet(position, dimensions, type, false, "one");
+		bodyObjects = BodyCreator.createAndGetEntity(position, dimensions, type, false, "one");
 	}
 	
 	public void update(){
