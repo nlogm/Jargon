@@ -39,7 +39,7 @@ public class CollisionReciever implements ContactListener{
 				e.trigger();
 			}
 			}catch(Exception d){
-				Gdx.app.log("Null", "Null fixture");
+				//Gdx.app.log("Null", "Null fixture");
 			}
 		}
 	}

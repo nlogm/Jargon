@@ -7,7 +7,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
@@ -27,6 +30,7 @@ import com.editor.listeners.InputReciever;
 import com.engine.joints.utils.Rope;
 
 import box2dLight.ConeLight;
+import box2dLight.PointLight;
 import box2dLight.RayHandler;
 
 public class Core extends ApplicationAdapter {
@@ -41,7 +45,10 @@ public class Core extends ApplicationAdapter {
 	private Player player;
 	private InputReciever input;
 	ConeLight l1, l2;
+	PointLight pussy;
 	Rope r,r2;
+	TextureRegion tmpRegion;
+	Sprite tmpSprite, dumb;
 	@Override
 	public void create() {
 		camera = new OrthographicCamera();
@@ -72,15 +79,20 @@ public class Core extends ApplicationAdapter {
 		render = new Box2DDebugRenderer();
 		//LightManager.setWorld(WorldManager.getWorld("one"));
 		WorldManager.getWorld("one").setContactListener(new CollisionReciever());
-		testZone();
 		player = new Player(new Vector2(1, 1));
 		player.setFriction(0.1f);
+		Texture tmp = new Texture(Gdx.files.internal("player15.png"));
+		tmpRegion = new TextureRegion(tmp, tmp.getWidth() / 4, tmp.getHeight() / 4);
+		tmpSprite = new Sprite(tmpRegion);
+		player.attachNewSprite(tmpSprite);
 		input = new InputReciever(player);
 		Gdx.input.setInputProcessor(input);
 		StringTokenizer t;
 		t = new StringTokenizer("Anal, Beads");
 		System.out.println(t.nextToken(" "));
-		
+		dumb = new Sprite(new Texture(Gdx.files.internal("dumb.png")));
+		dumb.setAlpha(0);
+		testZone();
 	}
 	
 	public void testZone(){
@@ -102,7 +114,8 @@ public class Core extends ApplicationAdapter {
 		l2 = LightCreator.createConeLight(new Vector2(2 , 4), Color.GREEN, 100f, false, 15, 360);
 		l2.setColor(l2.getColor().r, l2.getColor().g, l2.getColor().b, 0);
 		r.attachLight(l2, -1, -90);
-		
+		pussy = LightCreator.createPointLight(new Vector2(1.85f, .5f), Color.RED, 1, false);
+		pussy.setColor(pussy.getColor().r, pussy.getColor().g, pussy.getColor().b, 0);
 		
 	}
 	ConeLight c;
@@ -124,6 +137,19 @@ public class Core extends ApplicationAdapter {
 		
 		}else{
 			l1.setColor(l1.getColor().r, l1.getColor().g, l1.getColor().b, el / 2);
+		}
+		if(el > 10){
+			
+			l2.setConeDegree(l2.getConeDegree() - el / 100);
+			l1.setConeDegree(l1.getConeDegree() - el / 100);
+			l1.setColor(l1.getColor().r, l1.getColor().g, l1.getColor().b, l1.getColor().a - el / 50);
+			l2.setColor(l2.getColor().r, l2.getColor().g, l2.getColor().b, l2.getColor().a - el / 50);
+		}
+		if(el > 15){
+			dumb.setAlpha(1);
+			pussy.setColor(pussy.getColor().r, pussy.getColor().g, pussy.getColor().b, 1);
+			pussy.setPosition(2.5f, .75f);
+			pussy.setDistance(.75f);
 		}
 		// Update everything with scaled property
 		camera.update();
@@ -154,6 +180,12 @@ public class Core extends ApplicationAdapter {
 		batch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 		batch.begin();
 		EntityManager.renderBodies(batch);
+		tmpSprite.setPosition(1, .1f);
+		tmpSprite.setSize(1, 1);
+		dumb.setPosition(2, .1f);
+		dumb.setSize(1, 1);
+		dumb.draw(batch);
+		tmpSprite.draw(batch);
 		batch.end();
 
 		LightManager.handler.render();
