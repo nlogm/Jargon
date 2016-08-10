@@ -74,6 +74,7 @@ public class Level {
 		currentRealm = realms.get(realmIndex);
 		currentRealm.getWorld().setContactListener(collisionReciever);
 		inputReciever.setPlayer(players.get(realmIndex));
+		//this transforms the player in the list to the position of the original
 		players.get(realmIndex).retainState(tmpPlayer);
 		collisionReciever.setPlayer(players.get(realmIndex));
 	}

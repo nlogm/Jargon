@@ -18,9 +18,9 @@ public class MovementController {
 	public void update(){
 		
 		if(player.getMovementBoolean(PlayerTuples.TRIES_JUMP) && player.getMovementBoolean(PlayerTuples.CAN_JUMP)){	jump.execute(player); }
-		if(player.getMovementBoolean(PlayerTuples.CAN_GO_DOWN)){ down.execute(player); }
-		if(player.getMovementBoolean(PlayerTuples.MOVE_LEFT)){ moveLeft.execute(player); }
-		if(player.getMovementBoolean(PlayerTuples.MOVE_RIGHT)){ moveRight.execute(player); }
+		if(player.getMovementBoolean(PlayerTuples.CAN_GO_DOWN) && player.getBody().getLinearVelocity().y < 2){ down.execute(player); }
+		if(player.getMovementBoolean(PlayerTuples.MOVE_LEFT) && player.getBody().getLinearVelocity().x > -Player.MAX_SPEED){ moveLeft.execute(player); }
+		if(player.getMovementBoolean(PlayerTuples.MOVE_RIGHT) && player.getBody().getLinearVelocity().x < Player.MAX_SPEED){ moveRight.execute(player); }
 		
 	}
 

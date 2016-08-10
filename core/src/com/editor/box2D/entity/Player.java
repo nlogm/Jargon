@@ -26,6 +26,8 @@ public class Player extends Entity {
 	public static int BOTTOM_LEFT_INDEX = 3;
 	public static int BODY = 4;
 	
+	public static float MAX_SPEED = 2;
+	
 	public Player(Vector2 position) {
 		super(position);
 
@@ -63,7 +65,6 @@ public class Player extends Entity {
 		}else{
 			movementCommands.set(PlayerTuples.CAN_JUMP, true);
 		}
-		
 		
 		if(movementCommands.get(PlayerTuples.IS_HANGING)){
 			((Body)bodyObjects.get(BodyReferences.BODY)).setLinearVelocity(0, 0);
@@ -110,6 +111,7 @@ public class Player extends Entity {
 	}
 	
 	public void retainState(Player player){
+		//gets body and sets
 		((Body) bodyObjects.get(BodyReferences.BODY)).setTransform(player.getBody().getPosition(), player.getBody().getAngle());
 		((Body) bodyObjects.get(BodyReferences.BODY)).setLinearVelocity(player.getBody().getLinearVelocity());
 	}
