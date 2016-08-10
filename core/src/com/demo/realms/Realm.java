@@ -6,11 +6,20 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.physics.box2d.CircleShape;
+import com.badlogic.gdx.physics.box2d.Fixture;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.editor.box2D.WorldManager;
+import com.editor.box2D.constants.Helper;
 import com.editor.box2D.constants.WorldConstants;
+import com.editor.box2D.entity.BoxEntity;
 
 import box2dLight.RayHandler;
 
@@ -25,28 +34,55 @@ public class Realm {
 	private String realmID;
 	private SpriteBatch batch;
 	private ShapeRenderer shapeRenderer;
-	private Matrix4 currentMatrix;
 	
 	// World stepping variables
 	private float frameTime;
 	private double accumulator;
 
-	public Realm(String realmID, Matrix4 cameraMatrix) {
+	public Realm(String realmID) {
 
-		//Matrix to update and render on
-		this.currentMatrix = cameraMatrix;
 		// id to reference realm
 		this.realmID = realmID;
 
 		// Create realm specific renderer
 		render = new Box2DDebugRenderer();
-
+		
+		batch = new SpriteBatch();
+		
+		shapeRenderer = new ShapeRenderer();
+		shapeRenderer.setAutoShapeType(true);
+		
+		
+		
 		// Creates a world for which the rayhandler will render to
 		world = new World(new Vector2(0, -9.81f), true);
+		
 
 		// Create realm specific RayHandler
 		handler = new RayHandler(world);
+		handler.setAmbientLight(.5f);
+		
+		handler.setShadows(true);
+		
+		//BoxEntity entity = new BoxEntity(Helper.createVec(1, 1), Helper.createVec(100, 100), BodyType.StaticBody);
+		BodyDef bodyDef = new BodyDef();
+		bodyDef.type = BodyType.StaticBody;
+		bodyDef.position.set(new Vector2(1, 1));
 
+		Body body = world.createBody(bodyDef);
+
+		FixtureDef fixtureDef = new FixtureDef();
+		Fixture fixture;
+			PolygonShape rectangle = new PolygonShape();
+			rectangle.setAsBox(1,1);
+			fixtureDef.shape = rectangle;
+			fixtureDef.density = 5;
+			fixtureDef.friction = .3f;
+			fixtureDef.restitution = 0;
+			fixture = body.createFixture(fixtureDef);
+			//rectangle.dispose();
+			
+		
 	}
 
 	/**
@@ -81,19 +117,32 @@ public class Realm {
 		handler.setAmbientLight(ambient);
 	}
 
-	public void update() {
+	public void update(OrthographicCamera camera) {
 		doPhysicsStep(Gdx.graphics.getDeltaTime());
-		batch.setProjectionMatrix(currentMatrix);
+
+		
+		batch.setProjectionMatrix(camera.combined);
+		shapeRenderer.setProjectionMatrix(camera.combined);
+		handler.update();
 	}
 
-	public void render() {
+	public void render(OrthographicCamera camera) {
 
 		// refresh render buffer
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		Gdx.gl.glEnable(GL20.GL_BLEND);
-		Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+		Gdx.gl.glBlendFunc (GL20.GL_DST_COLOR, GL20.GL_ZERO);
 		Gdx.gl.glClearColor(0, 0, 0, 0);
+		
+		render.render(world, camera.combined);
 
+		handler.render();
+		
+		batch.begin();
+		
+		batch.end();
+		
+		
 	}
 
 	/**

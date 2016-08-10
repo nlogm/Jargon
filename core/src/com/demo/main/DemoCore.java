@@ -2,26 +2,30 @@ package com.demo.main;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.bootup.StartUp;
-import com.editor.states.StateManager;
+import com.demo.realms.Level;
+import com.editor.box2D.constants.Scaler;
 
 public class DemoCore extends ApplicationAdapter {
-
-	// StateManagner reference
-	private StateManager stateManager;
 
 	// LibGDX Object references
 	private OrthographicCamera camera;
 	private SpriteBatch spriteBatch;
 
+	//Level stuff
+	private Level demoLevel;
+	
+	
+	
 	@Override
 	public void create() {
 
 		camera = new OrthographicCamera();
+		camera.setToOrtho(false, Gdx.graphics.getWidth() / Scaler.PPM, Gdx.graphics.getHeight() / Scaler.PPM);
 		spriteBatch = new SpriteBatch();
+		
+		demoLevel = new Level();
 	}
 
 	@Override
@@ -29,12 +33,17 @@ public class DemoCore extends ApplicationAdapter {
 		//===============================
 		//===========Update==============
 		//===============================
+		camera.update();
+		camera.position.set(1, 1, 0);
+		demoLevel.update(camera);
 		
 		// Set title to FPS
 		Gdx.graphics.setTitle(Gdx.graphics.getFramesPerSecond() + "");
 
 		
 		
+		
+		demoLevel.render(camera);
 		
 		//===============================
 		//===========Render==============

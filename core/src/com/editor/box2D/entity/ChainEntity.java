@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.demo.realms.Realm;
 import com.editor.box2D.bodies.BodyCreator;
 
 public class ChainEntity extends Entity{
@@ -22,6 +23,16 @@ public class ChainEntity extends Entity{
 			i++;
 		}
 		bodyObjects = BodyCreator.createChain(chainVerts, type, worldKey);
+	}
+	
+	public void createBody(Realm realm) {
+		chainVerts = new Vector2[preLoadedVerts.size];
+		int i = 0;
+		for(Vector2 finalVertices : preLoadedVerts){
+			chainVerts[i] = finalVertices;
+			i++;
+		}
+		bodyObjects = BodyCreator.createChain(chainVerts, type, realm);
 	}
 
 	@Override

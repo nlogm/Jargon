@@ -151,6 +151,7 @@ public class Core extends ApplicationAdapter {
 			pussy.setPosition(2.5f, .75f);
 			pussy.setDistance(.75f);
 		}
+		System.out.println("com.engine.main.core");
 		// Update everything with scaled property
 		camera.update();
 		camera.position.set(player.getBody().getPosition().x, player.getBody().getPosition().y + 1, 0);

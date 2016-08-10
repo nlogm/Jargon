@@ -11,11 +11,13 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Fixture;
+import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
-import com.editor.box2D.constants.BodyReferences;
-import com.editor.box2D.generation.EntityIDMaker;
+import com.demo.realms.Realm;
 import com.editor.box2D.EntityManager;
 import com.editor.box2D.WorldManager;
+import com.editor.box2D.constants.BodyReferences;
+import com.editor.box2D.generation.EntityIDMaker;
 
 public class Entity {
 
@@ -30,6 +32,7 @@ public class Entity {
 	protected boolean fixtureDataSet;
 	protected Vector2[] chainVerts;
 	protected Array<Vector2> preLoadedVerts = new Array<Vector2>();
+
 	/**
 	 * For rectangle or square bodies
 	 * 
@@ -47,25 +50,25 @@ public class Entity {
 		EntityManager.addEntity(this);
 
 	}
-	
-	public Entity(BodyType type){
+
+	public Entity(BodyType type) {
 		this.type = type;
 	}
-	
-	public void setChains(Vector2... chain){
-		
-		for(Vector2 vert : chain){
+
+	public void setChains(Vector2... chain) {
+
+		for (Vector2 vert : chain) {
 			preLoadedVerts.add(vert);
 		}
 	}
-	
-	public void addVertice(Vector2...additionalVertices){
-		for(Vector2 vert : additionalVertices){
+
+	public void addVertice(Vector2... additionalVertices) {
+		for (Vector2 vert : additionalVertices) {
 			preLoadedVerts.add(vert);
 		}
 	}
-	
-	public Entity(Vector2 position){
+
+	public Entity(Vector2 position) {
 		this.position = position;
 		this.type = BodyType.DynamicBody;
 		EntityManager.addEntity(this);
@@ -109,6 +112,11 @@ public class Entity {
 		((Body) (bodyObjects.get(BodyReferences.BODY))).getFixtureList().first().setRestitution(restitution);
 
 	}
+	
+	public void setFilterBits(short mask, short category){
+		((Body) (bodyObjects.get(BodyReferences.BODY))).getFixtureList().first().getFilterData().categoryBits = category;
+		((Body) (bodyObjects.get(BodyReferences.BODY))).getFixtureList().first().getFilterData().maskBits = mask;
+	}
 
 	public void setDensity(float density) {
 		((Body) (bodyObjects.get(BodyReferences.BODY))).getFixtureList().first().setDensity(density);
@@ -125,11 +133,12 @@ public class Entity {
 	public void setAngleDegrees(float angleInDegrees) {
 		((Body) (bodyObjects.get(BodyReferences.BODY))).setTransform(position, angleInDegrees * MathUtils.degreesToRadians);
 	}
+
 	public void setAngleRadian(float angleInRadians) {
 		((Body) (bodyObjects.get(BodyReferences.BODY))).setTransform(position, angleInRadians);
 	}
-	
-	public void setFixtureData(boolean isTriggerable){
+
+	public void setFixtureData(boolean isTriggerable) {
 		((Fixture) (bodyObjects.get(BodyReferences.FIXTURE))).setUserData(isTriggerable + "" + EntityIDMaker.generate());
 		fixtureDataSet = true;
 		System.out.println("ID of " + EntityManager.getEntities().size + ": " + ((Fixture) (bodyObjects.get(BodyReferences.FIXTURE))).getUserData());
@@ -142,8 +151,8 @@ public class Entity {
 	public void setSize(float radiusInMeters) {
 		this.dimensions.x = radiusInMeters;
 	}
-	
-	public void trigger(){
+
+	public void trigger() {
 		System.out.println("trigger activated");
 	}
 
@@ -166,15 +175,25 @@ public class Entity {
 	public Body getBody() {
 		return ((Body) bodyObjects.get(BodyReferences.BODY));
 	}
-	public void assureFixtureData(){
-		if(!fixtureDataSet)
+
+	public void assureFixtureData() {
+		if (!fixtureDataSet)
 			((Fixture) (bodyObjects.get(BodyReferences.FIXTURE))).setUserData(Boolean.toString(false) + "~" + EntityIDMaker.generate());
 	}
+
 	public void createBody(String worldHash) {
 		WorldManager.getWorld(worldHash).createBody(((BodyDef) (bodyObjects.get(BodyReferences.BODY_DEF))));
 	}
-	
-	public void createBody(Vector2[] vertices, String worldKey){
+
+	public void createBody(Vector2[] vertices, String worldKey) {
 		WorldManager.getWorld(worldKey).createBody(((BodyDef) (bodyObjects.get(BodyReferences.BODY_DEF))));
+	}
+	
+	public void createBody(World world) {
+		world.createBody(((BodyDef) (bodyObjects.get(BodyReferences.BODY_DEF))));
+	}
+
+	public void createBody(Vector2[] vertices, Realm realm) {
+		realm.getWorld().createBody(((BodyDef) (bodyObjects.get(BodyReferences.BODY_DEF))));
 	}
 }

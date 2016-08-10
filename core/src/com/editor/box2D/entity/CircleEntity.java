@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.badlogic.gdx.physics.box2d.World;
 import com.editor.box2D.bodies.BodyCreator;
 
 public class CircleEntity extends Entity{
@@ -15,6 +16,11 @@ public class CircleEntity extends Entity{
 	@Override
 	public void createBody(String worldKey){
 		bodyObjects = BodyCreator.createAndGetEntity(position, new Vector2(radius, radius), type, true, worldKey);
+	}
+	
+	
+	public void createBody(World world){
+		bodyObjects = BodyCreator.createAndGetEntity(position, new Vector2(radius, radius), type, true, world);
 	}
 
 	@Override

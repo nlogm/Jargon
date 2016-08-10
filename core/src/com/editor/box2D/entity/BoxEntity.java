@@ -4,22 +4,29 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.badlogic.gdx.physics.box2d.World;
 import com.editor.box2D.bodies.BodyCreator;
 
-public class BoxEntity extends Entity{
+public class BoxEntity extends Entity {
 
 	public BoxEntity(Vector2 positionInMeters, Vector2 dimensionsInMeteres, BodyType type) {
 		super(positionInMeters, dimensionsInMeteres, type);
 	}
-	
-	public void createBody(String worldKey){
-		
+
+	public void createBody(String worldKey) {
+
 		bodyObjects = BodyCreator.createAndGetEntity(position, dimensions, type, false, worldKey);
 		assureFixtureData();
 	}
-	
+
+	public void createBody(World world) {
+
+		bodyObjects = BodyCreator.createAndGetEntity(position, dimensions, type, false, world);
+		assureFixtureData();
+	}
+
 	@Override
-	public void addFixtureDefProperties(float density, float friction, float restitution){
+	public void addFixtureDefProperties(float density, float friction, float restitution) {
 		super.addFixtureDefProperties(density, friction, restitution);
 	}
 
@@ -51,21 +58,29 @@ public class BoxEntity extends Entity{
 	public void setSize(float radiusInMeters) {
 		super.setSize(radiusInMeters);
 	}
-	
+
 	/**
 	 * Not applicable for type 'Circle'
 	 */
 	@Override
 	@Deprecated
-	public float getRadius(){ return this.radius;}
-	
+	public float getRadius() {
+		return this.radius;
+	}
+
 	@Override
-	public Vector2 getDimensions(){ return this.dimensions;}
-	
+	public Vector2 getDimensions() {
+		return this.dimensions;
+	}
+
 	@Override
-	public Sprite getEntitySprite(){ return this.entitySprite;}
-	
+	public Sprite getEntitySprite() {
+		return this.entitySprite;
+	}
+
 	@Override
-	public BodyType getBodyType(){ return this.type;} 
+	public BodyType getBodyType() {
+		return this.type;
+	}
 
 }
