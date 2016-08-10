@@ -25,8 +25,8 @@ import com.editor.box2D.entity.ChainEntity;
 import com.editor.box2D.entity.Entity;
 import com.editor.box2D.entity.Orb;
 import com.editor.box2D.entity.Player;
-import com.editor.listeners.CollisionReciever;
 import com.editor.listeners.InputReciever;
+import com.editor.listeners.collision.CollisionReciever;
 import com.engine.joints.utils.Rope;
 
 import box2dLight.ConeLight;
@@ -78,13 +78,13 @@ public class Core extends ApplicationAdapter {
 		batch = new SpriteBatch();
 		render = new Box2DDebugRenderer();
 		//LightManager.setWorld(WorldManager.getWorld("one"));
-		WorldManager.getWorld("one").setContactListener(new CollisionReciever());
 		player = new Player(new Vector2(1, 1));
 		player.setFriction(0.1f);
+		player.attachNewSprite(tmpSprite);
 		Texture tmp = new Texture(Gdx.files.internal("player15.png"));
 		tmpRegion = new TextureRegion(tmp, tmp.getWidth() / 4, tmp.getHeight() / 4);
 		tmpSprite = new Sprite(tmpRegion);
-		player.attachNewSprite(tmpSprite);
+		WorldManager.getWorld("one").setContactListener(new CollisionReciever(player));
 		input = new InputReciever(player);
 		Gdx.input.setInputProcessor(input);
 		StringTokenizer t;

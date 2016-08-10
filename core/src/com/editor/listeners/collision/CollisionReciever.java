@@ -1,14 +1,14 @@
-package com.editor.listeners;
+package com.editor.listeners.collision;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.utils.Array;
-import com.editor.box2D.entity.Entity;
 import com.editor.box2D.EntityManager;
+import com.editor.box2D.entity.Entity;
+import com.editor.box2D.entity.Player;
 
 public class CollisionReciever implements ContactListener{
 
@@ -17,10 +17,10 @@ public class CollisionReciever implements ContactListener{
 	
 	private Array<Entity> entityList;
 	private Fixture fixtureA, fixtureB;
+	private Player player;
 	
-	
-	public CollisionReciever(){
-		
+	public CollisionReciever(Player player){
+		this.player = player;
 		entityList = EntityManager.getEntities();
 		
 	}
@@ -30,18 +30,9 @@ public class CollisionReciever implements ContactListener{
 	}
 	@Override
 	public void beginContact(Contact contact) {
-		preCheck();
 		fixtureA = contact.getFixtureA();
 		fixtureB = contact.getFixtureB();
-		for(Entity e : entityList){
-			try{
-			if(e.getBody().getFixtureList().first().getUserData().equals(fixtureA.getUserData())){
-				e.trigger();
-			}
-			}catch(Exception d){
-				//Gdx.app.log("Null", "Null fixture");
-			}
-		}
+		System.out.println(fixtureA.getUserData());
 	}
 
 	@Override

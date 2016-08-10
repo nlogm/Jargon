@@ -92,17 +92,17 @@ public class Entity {
 
 	public void attachNewSprite(Sprite sprite) {
 		entitySprite = sprite;
-		((Body) bodyObjects.get(BodyReferences.BODY)).setUserData(entitySprite);
+		//((Body) bodyObjects.get(BodyReferences.BODY)).setUserData(entitySprite);
 	}
 
 	public void attachNewSprite(Texture tex) {
 		entitySprite = new Sprite(tex);
-		((Body) bodyObjects.get(BodyReferences.BODY)).setUserData(entitySprite);
+		//((Body) bodyObjects.get(BodyReferences.BODY)).setUserData(entitySprite);
 	}
 
 	public void attachNewSprite(String internalPath) {
 		entitySprite = new Sprite(new Texture(Gdx.files.internal(internalPath)));
-		((Body) bodyObjects.get(BodyReferences.BODY)).setUserData(entitySprite);
+		//((Body) bodyObjects.get(BodyReferences.BODY)).setUserData(entitySprite);
 	}
 
 	public void addFixtureDefProperties(float density, float friction, float restitution) {

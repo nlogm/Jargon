@@ -17,9 +17,12 @@ import com.demo.realms.Realm;
 import com.editor.box2D.EntityManager;
 import com.editor.box2D.WorldManager;
 import com.editor.box2D.constants.BodyReferences;
+import com.editor.box2D.constants.Helper;
+import com.editor.listeners.collision.FixtureData;
 
 public class BodyCreator {
 
+	private static Vector2 MAX_SENSOR_SIZE = new Vector2(.05f, .05f);
 	/**
 	 * Returns HashMap of bodies
 	 * 
@@ -74,6 +77,8 @@ public class BodyCreator {
 	}
 
 	
+	
+	
 	/**
 	 * Returns HashMap of bodies
 	 * 
@@ -124,6 +129,51 @@ public class BodyCreator {
 		bodyObjectsHash.put(BodyReferences.FIXTURE, fixture);
 		bodyObjectsHash.put(BodyReferences.FIXTURE_DEF, fixtureDef);
 
+		
+		
+		PolygonShape rectangle = new PolygonShape();
+		rectangle.setAsBox(MAX_SENSOR_SIZE.x, MAX_SENSOR_SIZE.y, Helper.createVec(dimensions.x, dimensions.y), body.getAngle());
+		fixtureDef.shape = rectangle;
+		fixtureDef.isSensor = true;
+		fixtureDef.density = 0;
+		fixtureDef.friction = 0f;
+		fixtureDef.restitution = 0;
+		body.createFixture(fixtureDef).setUserData(FixtureData.TOP_RIGHT_SENSOR);
+		rectangle.dispose();
+		
+		
+		rectangle = new PolygonShape();
+		rectangle.setAsBox(MAX_SENSOR_SIZE.x, MAX_SENSOR_SIZE.y, Helper.createVec(-dimensions.x, dimensions.y), body.getAngle());
+		fixtureDef.shape = rectangle;
+		fixtureDef.isSensor = true;
+		fixtureDef.density = 0;
+		fixtureDef.friction = 0f;
+		fixtureDef.restitution = 0;
+		body.createFixture(fixtureDef).setUserData(FixtureData.TOP_LEFT_SENSOR);
+		rectangle.dispose();
+		
+		rectangle = new PolygonShape();
+		rectangle.setAsBox(MAX_SENSOR_SIZE.x, MAX_SENSOR_SIZE.y, Helper.createVec(-dimensions.x, -dimensions.y), body.getAngle());
+		fixtureDef.shape = rectangle;
+		fixtureDef.isSensor = true;
+		fixtureDef.density = 0;
+		fixtureDef.friction = 0f;
+		fixtureDef.restitution = 0;
+		body.createFixture(fixtureDef).setUserData(FixtureData.BOTTOM_LEFT_SENSOR | FixtureData.PLAYER_MASK);
+		rectangle.dispose();
+		
+		rectangle = new PolygonShape();
+		rectangle.setAsBox(MAX_SENSOR_SIZE.x, MAX_SENSOR_SIZE.y, Helper.createVec(dimensions.x, -dimensions.y), body.getAngle());
+		fixtureDef.shape = rectangle;
+		fixtureDef.isSensor = true;
+		fixtureDef.density = 0;
+		fixtureDef.friction = 0f;
+		fixtureDef.restitution = 0;
+		body.createFixture(fixtureDef).setUserData(FixtureData.BOTTOM_RIGHT_SENSOR);
+		rectangle.dispose();
+		
+		
+		
 		return bodyObjectsHash;
 	}
 	

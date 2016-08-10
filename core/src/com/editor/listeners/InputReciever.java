@@ -2,6 +2,7 @@ package com.editor.listeners;
 
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
+import com.demo.realms.Level;
 import com.editor.box2D.constants.PlayerTuples;
 import com.editor.box2D.entity.Player;
 
@@ -9,8 +10,21 @@ public class InputReciever implements InputProcessor{
 
 	
 	private Player player;
+	// this one is gonna get deleted
 	public InputReciever(Player player){
 		this.player = player;
+	}
+	
+	
+	private Level currentLevel;
+	
+	public InputReciever(Player player, Level currentLevel){
+		this.player = player;
+		this.currentLevel = currentLevel;
+	}
+	public void setPlayer(Player current){
+		this.player = current;
+		System.out.println("set");
 	}
 	@Override
 	public boolean keyDown(int keycode) {
@@ -34,14 +48,18 @@ public class InputReciever implements InputProcessor{
 		if(keycode == Keys.A)
 			player.setMovementBoolean(PlayerTuples.MOVE_LEFT, false);
 		
-		if(keycode == Keys.D)
+		if(keycode == Keys.D){
 			player.setMovementBoolean(PlayerTuples.MOVE_RIGHT, false);
+		}
 		
 		if(keycode == Keys.W)
 			player.setMovementBoolean(PlayerTuples.JUMP, false);
 		
 		if(keycode == Keys.S)
 			player.setMovementBoolean(PlayerTuples.TRY_DOWN, false);
+		
+		if(keycode == Keys.SHIFT_LEFT && currentLevel != null)
+			currentLevel.switchRealm();
 		return false;
 	}
 
