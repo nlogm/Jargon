@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.World;
 import com.editor.box2D.bodies.BodyCreator;
+import com.editor.listeners.collision.FixtureData;
 
 public class BoxEntity extends Entity {
 
@@ -21,7 +22,7 @@ public class BoxEntity extends Entity {
 
 	public void createBody(World world) {
 
-		bodyObjects = BodyCreator.createAndGetEntity(position, dimensions, type, false, world);
+		bodyObjects = BodyCreator.createAndGetEntity(position, dimensions, type, false, world, FixtureData.OTHER);
 		assureFixtureData();
 	}
 

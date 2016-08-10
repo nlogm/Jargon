@@ -18,6 +18,7 @@ import com.editor.box2D.EntityManager;
 import com.editor.box2D.WorldManager;
 import com.editor.box2D.constants.BodyReferences;
 import com.editor.box2D.generation.EntityIDMaker;
+import com.editor.listeners.collision.FixtureData;
 
 public class Entity {
 
@@ -178,7 +179,7 @@ public class Entity {
 
 	public void assureFixtureData() {
 		if (!fixtureDataSet)
-			((Fixture) (bodyObjects.get(BodyReferences.FIXTURE))).setUserData(Boolean.toString(false) + "~" + EntityIDMaker.generate());
+			((Fixture) (bodyObjects.get(BodyReferences.FIXTURE))).setUserData((int) FixtureData.OTHER);
 	}
 
 	public void createBody(String worldHash) {

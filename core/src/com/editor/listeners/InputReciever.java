@@ -1,6 +1,7 @@
 package com.editor.listeners;
 
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.demo.realms.Level;
 import com.editor.box2D.constants.PlayerTuples;
@@ -34,15 +35,15 @@ public class InputReciever implements InputProcessor{
 		if(keycode == Keys.D)
 			player.setMovementBoolean(PlayerTuples.MOVE_RIGHT, true);
 		
-		if(keycode == Keys.W)
-			player.setMovementBoolean(PlayerTuples.JUMP, true);
-		
+		if(keycode == Keys.W){
+			player.setMovementBoolean(PlayerTuples.TRIES_JUMP, true);
+		}
 		if(keycode == Keys.S)
-			player.setMovementBoolean(PlayerTuples.TRY_DOWN, true);
+			player.setMovementBoolean(PlayerTuples.CAN_GO_DOWN, true);
 		
 		return false;
 	}
-
+	private boolean lifted;
 	@Override
 	public boolean keyUp(int keycode) {
 		if(keycode == Keys.A)
@@ -52,11 +53,12 @@ public class InputReciever implements InputProcessor{
 			player.setMovementBoolean(PlayerTuples.MOVE_RIGHT, false);
 		}
 		
-		if(keycode == Keys.W)
-			player.setMovementBoolean(PlayerTuples.JUMP, false);
+		if(keycode == Keys.W){
+			player.setMovementBoolean(PlayerTuples.TRIES_JUMP, false);
+		}
 		
 		if(keycode == Keys.S)
-			player.setMovementBoolean(PlayerTuples.TRY_DOWN, false);
+			player.setMovementBoolean(PlayerTuples.CAN_GO_DOWN, false);
 		
 		if(keycode == Keys.SHIFT_LEFT && currentLevel != null)
 			currentLevel.switchRealm();

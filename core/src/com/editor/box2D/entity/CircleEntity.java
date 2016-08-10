@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.World;
 import com.editor.box2D.bodies.BodyCreator;
+import com.editor.listeners.collision.FixtureData;
 
 public class CircleEntity extends Entity{
 
@@ -20,7 +21,7 @@ public class CircleEntity extends Entity{
 	
 	
 	public void createBody(World world){
-		bodyObjects = BodyCreator.createAndGetEntity(position, new Vector2(radius, radius), type, true, world);
+		bodyObjects = BodyCreator.createAndGetEntity(position, new Vector2(radius, radius), type, true, world, FixtureData.OTHER);
 	}
 
 	@Override

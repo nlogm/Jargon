@@ -18,7 +18,6 @@ public class Level {
 	private Realm currentRealm;
 	private int realmIndex = 0;
 	
-	private Player player;
 	InputReciever inputReciever;
 	private CollisionReciever collisionReciever;
 	public Level(){
@@ -30,23 +29,42 @@ public class Level {
 		
 		players = new Array<Player>();
 		for(Realm realm : realms){
-			players.add(new Player(new Vector2(1, 2)));
+			players.add(new Player(new Vector2(2, 3)));
 			players.get(players.size - 1).createBody(realm.getWorld());
 		}
-		BoxEntity entity = new BoxEntity(new Vector2(2, 1), new Vector2(1, .5f), BodyType.StaticBody);
+		BoxEntity entity = new BoxEntity(new Vector2(2, 1), new Vector2(1, .25f), BodyType.StaticBody);
 		entity.createBody(currentRealm.getWorld());
 		
-		BoxEntity entity1 = new BoxEntity(new Vector2(2, 1), new Vector2(1, .5f), BodyType.StaticBody);
-		entity1.createBody(realms.get(1).getWorld());
+		entity = new BoxEntity(new Vector2(5, 1.75f), new Vector2(1, .25f), BodyType.StaticBody);
+		entity.createBody(currentRealm.getWorld());
+		
+		entity = new BoxEntity(new Vector2(5.5f, .75f), new Vector2(.5f, .15f), BodyType.StaticBody);
+		entity.createBody(currentRealm.getWorld());
+		
+		entity = new BoxEntity(new Vector2(7, -1.75f), new Vector2(1, .15f), BodyType.StaticBody);
+		entity.createBody(currentRealm.getWorld());
+		
+		entity = new BoxEntity(new Vector2(6, -.25f), new Vector2(1, .15f), BodyType.StaticBody);
+		entity.createBody(realms.get(1).getWorld());
+		
+		entity= new BoxEntity(new Vector2(3, 1), new Vector2(1, .5f), BodyType.StaticBody);
+		entity.createBody(realms.get(1).getWorld());
+		
+		entity= new BoxEntity(new Vector2(3, -1), new Vector2(1, .25f), BodyType.StaticBody);
+		entity.createBody(realms.get(1).getWorld());
+		
 		
 		inputReciever = new InputReciever(players.get(realmIndex), this);
 		Gdx.input.setInputProcessor(inputReciever);
 		
-		collisionReciever = new CollisionReciever(player);
+		collisionReciever = new CollisionReciever();
+		collisionReciever.setPlayer(players.get(realmIndex));
 		currentRealm.getWorld().setContactListener(collisionReciever);
 	}
 	
+	private Player tmpPlayer;
 	public void switchRealm(){
+		tmpPlayer = players.get(realmIndex);
 		if(realmIndex < realms.size - 1){
 			realmIndex ++;
 		}else
@@ -55,7 +73,9 @@ public class Level {
 		
 		currentRealm = realms.get(realmIndex);
 		currentRealm.getWorld().setContactListener(collisionReciever);
-		inputReciever.setPlayer(player);
+		inputReciever.setPlayer(players.get(realmIndex));
+		players.get(realmIndex).retainState(tmpPlayer);
+		collisionReciever.setPlayer(players.get(realmIndex));
 	}
 	
 	public void render(OrthographicCamera camera){
@@ -63,7 +83,10 @@ public class Level {
 	}
 	
 	public void update(OrthographicCamera camera){
+		camera.position.set(players.get(realmIndex).getBody().getTransform().getPosition(), 0);
+		
 		currentRealm.update(camera);
+		
 		players.get(realmIndex).update();
 	}
 

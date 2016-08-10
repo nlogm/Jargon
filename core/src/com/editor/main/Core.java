@@ -84,7 +84,7 @@ public class Core extends ApplicationAdapter {
 		Texture tmp = new Texture(Gdx.files.internal("player15.png"));
 		tmpRegion = new TextureRegion(tmp, tmp.getWidth() / 4, tmp.getHeight() / 4);
 		tmpSprite = new Sprite(tmpRegion);
-		WorldManager.getWorld("one").setContactListener(new CollisionReciever(player));
+		//WorldManager.getWorld("one").setContactListener(new CollisionReciever(player));
 		input = new InputReciever(player);
 		Gdx.input.setInputProcessor(input);
 		StringTokenizer t;
