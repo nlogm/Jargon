@@ -41,6 +41,7 @@ public class Player extends Entity {
 
 	}
 
+	@Deprecated
 	public void createBody(String worldKey) {
 		bodyObjects = BodyCreator.createAndGetEntity(position, dimensions, type, false, worldKey);
 	}

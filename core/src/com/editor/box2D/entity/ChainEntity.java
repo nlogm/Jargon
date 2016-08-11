@@ -15,6 +15,7 @@ public class ChainEntity extends Entity{
 
 	
 	@Override
+	@Deprecated
 	public void createBody(String worldKey){
 		chainVerts = new Vector2[preLoadedVerts.size];
 		int i = 0;

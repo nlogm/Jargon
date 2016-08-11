@@ -1,5 +1,6 @@
 package com.editor.listeners.collision;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
@@ -35,42 +36,64 @@ public class CollisionReciever implements ContactListener {
 	public void beginContact(Contact contact) {
 		fixtureA = contact.getFixtureA();
 		fixtureB = contact.getFixtureB();
-	//	if(fixtureA)
-		if (fixtureA.getUserData() != null) {
-			int aData = (int) fixtureA.getUserData();
-			
-			//Check for ability to jump (is on ground)
+		int aData = 0;
+		int bData = 0;
+		// if(fixtureA)
+		if (fixtureA.getUserData() != null && fixtureB.getUserData() != null) {
+			try {
+				aData = (int) fixtureA.getUserData();
+			} catch (ClassCastException e) {
+				Gdx.app.log("Fatal", "You are using Entity.createBody(String worldHash), which is deprecated, fix calls to Entity");
+				e.printStackTrace();
+				System.exit(0);
+			}
+			// Check for ability to jump (is on ground)
 			if (aData == (int) player.getFixtures().get(Player.BOTTOM_LEFT_INDEX).getUserData()) {
 				player.setMovementBoolean(PlayerTuples.LEFT_FOOT_OFF, false);
 			}
 			if (aData == (int) player.getFixtures().get(Player.BOTTOM_RIGHT_INDEX).getUserData()) {
 				player.setMovementBoolean(PlayerTuples.RIGHT_FOOT_OFF, false);
 			}
-			
-			//check for grab
-			int bData = (int) fixtureB.getUserData();
-			if (aData == (int) player.getFixtures().get(Player.TOP_RIGHT_INDEX).getUserData() &&
-					bData == (int) (FixtureData.OTHER | FixtureData.TOP_LEFT_SENSOR)) {
+
+			// check for grab
+			try {
+				try {
+					bData = (int) fixtureB.getUserData();
+				} catch (ClassCastException e) {
+					Gdx.app.log("Fatal", "You are using Entity.createBody(String worldHash), which is deprecated, fix calls to Entity");
+					e.printStackTrace();
+					System.exit(0);
+				}
+			} catch (ClassCastException e) {
+				Gdx.app.log("Fatal", "You are using Entity.createBody(String worldHash), which is deprecated, fix calls to Entity");
+				e.printStackTrace();
+				System.exit(0);
+			}
+			if (aData == (int) player.getFixtures().get(Player.TOP_RIGHT_INDEX).getUserData() && bData == (int) (FixtureData.OTHER | FixtureData.TOP_LEFT_SENSOR)) {
 				player.setDestination(new Vector2(.5f, .35f));
 				player.setMovementBoolean(PlayerTuples.IS_HANGING, true);
 			}
-			
-			
+
 		}
 
-		if (fixtureB.getUserData() != null) {
-			int bData = (int) fixtureB.getUserData();
-			int aData = (int) fixtureA.getUserData();
+		if (fixtureB.getUserData() != null && fixtureA.getUserData() != null) {
+			try {
+				aData = (int) fixtureA.getUserData();
+				bData = (int) fixtureB.getUserData();
+			} catch (ClassCastException e) {
+				Gdx.app.log("Fatal", "You are using Entity.createBody(String worldHash), which is deprecated, fix calls to Entity");
+				e.printStackTrace();
+				System.exit(0);
+			}
 			if (bData == (int) player.getFixtures().get(Player.BOTTOM_LEFT_INDEX).getUserData()) {
 				player.setMovementBoolean(PlayerTuples.LEFT_FOOT_OFF, false);
 			}
 			if (bData == (int) player.getFixtures().get(Player.BOTTOM_RIGHT_INDEX).getUserData()) {
 				player.setMovementBoolean(PlayerTuples.RIGHT_FOOT_OFF, false);
-				
+
 			}
-			
-			if (bData == (int) player.getFixtures().get(Player.TOP_RIGHT_INDEX).getUserData() &&
-					aData == (int) (FixtureData.OTHER | FixtureData.TOP_LEFT_SENSOR)) {
+
+			if (bData == (int) player.getFixtures().get(Player.TOP_RIGHT_INDEX).getUserData() && aData == (int) (FixtureData.OTHER | FixtureData.TOP_LEFT_SENSOR)) {
 				player.setDestination(new Vector2(.2f, .1f));
 				player.setMovementBoolean(PlayerTuples.IS_HANGING, true);
 			}
@@ -81,9 +104,16 @@ public class CollisionReciever implements ContactListener {
 	public void endContact(Contact contact) {
 		fixtureA = contact.getFixtureA();
 		fixtureB = contact.getFixtureB();
-
+		int aData = 0;
+		int bData = 0;
 		if (fixtureA.getUserData() != null) {
-			int aData = (int) fixtureA.getUserData();
+			try {
+				aData = (int) fixtureA.getUserData();
+			} catch (ClassCastException e) {
+				Gdx.app.log("Fatal", "You are using Entity.createBody(String worldHash), which is deprecated, fix calls to Entity");
+				e.printStackTrace();
+				System.exit(0);
+			}
 			if (aData == (int) player.getFixtures().get(Player.BOTTOM_LEFT_INDEX).getUserData()) {
 				player.setMovementBoolean(PlayerTuples.LEFT_FOOT_OFF, true);
 			}
@@ -93,7 +123,13 @@ public class CollisionReciever implements ContactListener {
 		}
 
 		if (fixtureB.getUserData() != null) {
-			int bData = (int) fixtureB.getUserData();
+			try {
+				bData = (int) fixtureB.getUserData();
+			} catch (ClassCastException e) {
+				Gdx.app.log("Fatal", "You are using Entity.createBody(String worldHash), which is deprecated, fix calls to Entity");
+				e.printStackTrace();
+				System.exit(0);
+			}
 			if (bData == (int) player.getFixtures().get(Player.BOTTOM_LEFT_INDEX).getUserData()) {
 				player.setMovementBoolean(PlayerTuples.LEFT_FOOT_OFF, true);
 			}

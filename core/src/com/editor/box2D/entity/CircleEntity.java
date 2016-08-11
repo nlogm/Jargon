@@ -15,6 +15,7 @@ public class CircleEntity extends Entity{
 	}
 	
 	@Override
+	@Deprecated
 	public void createBody(String worldKey){
 		bodyObjects = BodyCreator.createAndGetEntity(position, new Vector2(radius, radius), type, true, worldKey);
 	}

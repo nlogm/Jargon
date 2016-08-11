@@ -182,6 +182,7 @@ public class Entity {
 			((Fixture) (bodyObjects.get(BodyReferences.FIXTURE))).setUserData((int) FixtureData.OTHER);
 	}
 
+	@Deprecated
 	public void createBody(String worldHash) {
 		WorldManager.getWorld(worldHash).createBody(((BodyDef) (bodyObjects.get(BodyReferences.BODY_DEF))));
 	}

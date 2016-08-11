@@ -14,6 +14,7 @@ public class BoxEntity extends Entity {
 		super(positionInMeters, dimensionsInMeteres, type);
 	}
 
+	@Deprecated
 	public void createBody(String worldKey) {
 
 		bodyObjects = BodyCreator.createAndGetEntity(position, dimensions, type, false, worldKey);
