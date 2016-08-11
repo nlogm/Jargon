@@ -84,8 +84,8 @@ public class Realm {
 	}
 
 	public void update(OrthographicCamera camera) {
-		doPhysicsStep(Gdx.graphics.getDeltaTime());
-
+		//doPhysicsStep(Gdx.graphics.getDeltaTime());
+		world.step(1/60f, 6, 2);
 		batch.setProjectionMatrix(camera.combined);
 		handler.update();
 	}
