@@ -48,7 +48,7 @@ public class Player extends Entity {
 
 	public void createBody(World world) {
 		bodyObjects = BodyCreator.createAndGetEntity(position, dimensions, type, false, world, FixtureData.PLAYER_MASK);
-		((Body) bodyObjects.get(BodyReferences.BODY)).setAngularDamping(200);
+		((Body) bodyObjects.get(BodyReferences.BODY)).setAngularDamping(2000);
 		((Fixture) bodyObjects.get(BodyReferences.FIXTURE)).setUserData((int)FixtureData.PLAYER_MASK);
 		playerFixtures.add(((Fixture) bodyObjects.get(BodyReferences.FIX_TOP_RIGHT)));
 		playerFixtures.add(((Fixture) bodyObjects.get(BodyReferences.FIX_TOP_LEFT)));
@@ -73,7 +73,7 @@ public class Player extends Entity {
 			movementCommands.set(PlayerTuples.CAN_JUMP, false);
 			movementCommands.set(PlayerTuples.MOVE_LEFT, false);
 			movementCommands.set(PlayerTuples.MOVE_RIGHT, false);
-			if(Gdx.input.isKeyJustPressed(Keys.W))
+			if(Gdx.input.isKeyJustPressed(Keys.W) || Gdx.input.isKeyJustPressed(Keys.UP))
 				goUp = true;
 			if(goUp){
 			if(((Body)bodyObjects.get(BodyReferences.BODY)).getPosition().y < destination.y)
@@ -82,12 +82,13 @@ public class Player extends Entity {
 				transY = true;
 			
 			if(((Body)bodyObjects.get(BodyReferences.BODY)).getPosition().x < destination.x && transY)
-				((Body)bodyObjects.get(BodyReferences.BODY)).setLinearVelocity(1, 0);
+				((Body)bodyObjects.get(BodyReferences.BODY)).setLinearVelocity(2, 0);
 			else
 				transX = true;
 			
 			if(transX && transY){
 				movementCommands.set(PlayerTuples.IS_HANGING, false);
+				
 				transX = false;
 				transY = false;
 				((Body)bodyObjects.get(BodyReferences.BODY)).setGravityScale(1);

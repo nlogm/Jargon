@@ -29,16 +29,16 @@ public class InputReciever implements InputProcessor{
 	}
 	@Override
 	public boolean keyDown(int keycode) {
-		if(keycode == Keys.A)
+		if(keycode == Keys.A || keycode == Keys.LEFT)
 			player.setMovementBoolean(PlayerTuples.MOVE_LEFT, true);
 		
-		if(keycode == Keys.D)
+		if(keycode == Keys.D || keycode == Keys.RIGHT)
 			player.setMovementBoolean(PlayerTuples.MOVE_RIGHT, true);
 		
-		if(keycode == Keys.W){
+		if(keycode == Keys.W || keycode == Keys.UP){
 			player.setMovementBoolean(PlayerTuples.TRIES_JUMP, true);
 		}
-		if(keycode == Keys.S)
+		if(keycode == Keys.S || keycode == Keys.DOWN)
 			player.setMovementBoolean(PlayerTuples.CAN_GO_DOWN, true);
 		
 		return false;
@@ -46,18 +46,18 @@ public class InputReciever implements InputProcessor{
 	private boolean lifted;
 	@Override
 	public boolean keyUp(int keycode) {
-		if(keycode == Keys.A)
+		if(keycode == Keys.A || keycode == Keys.LEFT)
 			player.setMovementBoolean(PlayerTuples.MOVE_LEFT, false);
 		
-		if(keycode == Keys.D){
+		if(keycode == Keys.D || keycode == Keys.RIGHT){
 			player.setMovementBoolean(PlayerTuples.MOVE_RIGHT, false);
 		}
 		
-		if(keycode == Keys.W){
+		if(keycode == Keys.W || keycode == Keys.UP){
 			player.setMovementBoolean(PlayerTuples.TRIES_JUMP, false);
 		}
 		
-		if(keycode == Keys.S)
+		if(keycode == Keys.S || keycode == Keys.DOWN)
 			player.setMovementBoolean(PlayerTuples.CAN_GO_DOWN, false);
 		
 		if(keycode == Keys.SHIFT_LEFT && currentLevel != null)
