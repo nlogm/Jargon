@@ -31,6 +31,8 @@ public class Player extends Entity {
 	public Player(Vector2 position) {
 		super(position);
 
+		
+		
 		this.dimensions = new Vector2(.1f, .1f);
 
 		movementCommands = new Array<Boolean>();

@@ -1,11 +1,12 @@
 package com.demo.realms;
 
+import java.util.List;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.utils.Array;
-import com.editor.box2D.constants.Helper;
 import com.editor.box2D.entity.BoxEntity;
 import com.editor.box2D.entity.Player;
 import com.editor.listeners.InputReciever;
@@ -15,6 +16,7 @@ public class Level {
 	
 	private Array<Realm> realms;
 	private Array<Player> players;
+	private List<Realm> levelRealms;
 	private Realm currentRealm;
 	private int realmIndex = 0;
 	
@@ -28,10 +30,15 @@ public class Level {
 		currentRealm = realms.get(realmIndex);
 		
 		players = new Array<Player>();
-		for(Realm realm : realms){
+		
+
+		realms.forEach(entry -> {players.add(new Player(new Vector2(2, 3))); players.get(players.size - 1).createBody(entry.getWorld());});
+
+		//pussy way
+		/*for(Realm realm : realms){
 			players.add(new Player(new Vector2(2, 3)));
 			players.get(players.size - 1).createBody(realm.getWorld());
-		}
+		}*/
 		BoxEntity entity = new BoxEntity(new Vector2(2, 1), new Vector2(1, .25f), BodyType.StaticBody);
 		entity.createBody(currentRealm.getWorld());
 		
