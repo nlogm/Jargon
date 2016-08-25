@@ -142,6 +142,7 @@ public class Entity {
 	public void setFixtureData(boolean isTriggerable) {
 		((Fixture) (bodyObjects.get(BodyReferences.FIXTURE))).setUserData(isTriggerable + "" + EntityIDMaker.generate());
 		fixtureDataSet = true;
+		
 		System.out.println("ID of " + EntityManager.getEntities().size + ": " + ((Fixture) (bodyObjects.get(BodyReferences.FIXTURE))).getUserData());
 	}
 

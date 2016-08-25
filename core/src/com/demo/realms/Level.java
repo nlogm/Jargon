@@ -30,8 +30,6 @@ public class Level {
 		currentRealm = realms.get(realmIndex);
 		
 		players = new Array<Player>();
-		
-
 		realms.forEach(entry -> {players.add(new Player(new Vector2(2, 3))); players.get(players.size - 1).createBody(entry.getWorld());});
 
 		//pussy way
@@ -56,6 +54,7 @@ public class Level {
 		
 		entity= new BoxEntity(new Vector2(3, 1), new Vector2(1, .5f), BodyType.StaticBody);
 		entity.createBody(realms.get(1).getWorld());
+		
 		
 		entity= new BoxEntity(new Vector2(3, -1), new Vector2(1, .25f), BodyType.StaticBody);
 		entity.createBody(realms.get(1).getWorld());
