@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.demo.realms.Level;
 import com.editor.box2D.constants.Scaler;
-import com.editor.listeners.InputReciever;
+import com.engine.filemanager.parser.LVLParser;
 
 public class DemoCore extends ApplicationAdapter {
 
@@ -16,7 +16,7 @@ public class DemoCore extends ApplicationAdapter {
 	// Level stuff
 	private Level demoLevel;
 	
-	
+	private LVLParser parse;
 	@Override
 	public void create() {
 
@@ -26,6 +26,9 @@ public class DemoCore extends ApplicationAdapter {
 
 		demoLevel = new Level();
 
+		parse = new LVLParser();
+		
+		parse.load("C:\\Users\\Owner\\Downloads\\example.lvl");
 		
 
 	}
