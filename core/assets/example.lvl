@@ -1,0 +1,78 @@
+# Lights
+
+id: 1,
+x: 25,
+y: 25,
+radius: 100,
+color: blue,
+type: point_light
+
+---
+
+id: 2,
+x: 20,
+y: 100,
+color: rgba(1,2,3,.5),
+type: directional_light
+
+---
+
+id: 3,
+x: 400,
+y: 400,
+color: cyan,
+type: cone_light
+
+---
+
+id: 4,
+x: 4000,
+y: 5000,
+color: red,
+type: chain_light
+
+***
+
+#Bodies
+
+id: 1,
+x: 40,
+y: 250,
+width: 10,
+height: 10,
+type: static
+
+---
+
+id: 2,
+x: 400,
+y: 250,
+width: 10,
+height: 10,
+type: kinematic
+
+--- 
+
+id: 3,
+x: 23,
+y: 23,
+width: 230,
+height: 23,
+type: static
+
+***
+
+#Player
+
+-id:
+x: 23,
+y: 23,
+width: 23,
+height: 23,
+type: dynamic,
+img_right: spritesheet_right.png
+img_left: spritesheet_left.png
+img_jump: spritesheet_jump.png
+img_crouch: spreetsheet_crouch.png
+img_standing: spritesheet_stand.png
+

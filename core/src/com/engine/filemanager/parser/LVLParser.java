@@ -4,11 +4,20 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 import java.util.StringTokenizer;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import com.badlogic.gdx.physics.box2d.World;
+
+import box2dLight.RayHandler;
 
 public class LVLParser {
 
 	private final String extension = ".lvl";
+	public static final char start = '#';
+	public static final char end_section= '*';
+	public static final char end_sub_section = '-';
+	public static final String NEW_LINE = System.getProperty("line.seperator");
 	private Section sections[];
 
 	public LVLParser() {
@@ -16,15 +25,13 @@ public class LVLParser {
 	}
 
 	public void load(String fileName) {
-		String line;
-
-		String levelName;
-
+		String tmp = fileName.substring(fileName.indexOf("desktop\\") + "desktop\\".length(), fileName.length());
+		System.out.println(tmp);
+		fileName = fileName.substring(0, fileName.indexOf(tmp)) + "bin\\" + tmp;
 		if (!(fileName.charAt(fileName.length() - extension.length()) == '.')) {
 			fileName += extension;
 		}
 
-		StringTokenizer beginToken, endToken;
 		String stream = "";
 		Scanner stackScan = null;
 		try {
@@ -46,47 +53,29 @@ public class LVLParser {
 
 	private void populateSections(String streamData) {
 		char start = '#';
-		char sep = '-';
 		int count = 0;
 		for (int i = 0; i < streamData.length() - 1; i++) {
 			if (streamData.substring(i, i + 1).equals(""+start)) {
 				count++;
 			}
 		}
-
 		sections = new Section[count];
-		/*for (int k = 0; k < count; k++) {
-			
-			System.out.println("Current Data: \n" + streamData);
-			
-			int first = streamData.indexOf(start) < 0 ? -1 : streamData.indexOf(start);
-			int last = streamData.indexOf(sep) < 0 ? -1 : streamData.indexOf(sep);
-			String tmp  = streamData.substring(first, last);
-			sections[k] = new Section();
-			sections[k].setContents(tmp);
-			streamData = streamData.substring(last, streamData.length() - 1);
-			
-			System.out.println("Data #" + k + "\n" + sections[k].getContents());
-		}*/
-		
-		StringTokenizer token = new StringTokenizer(streamData, start + "");
-		for(int i = 0; token.hasMoreTokens(); i++){
-			sections[i] = new Section();
-			sections[i].setContents(token.nextToken());
+		Pattern p = Pattern.compile("(?i)#(.*?)(?i)\\*\\*\\*", Pattern.DOTALL);
+		Matcher m = p.matcher(streamData);
+		int hitCount = 0;
+		while(m.find()){
+			sections[hitCount] = new Section();
+			sections[hitCount++].setContents(m.group(1));
 		}
-		
-		for(int i = 0; i < sections.length; i++){
-			token = new StringTokenizer(sections[i].getContents(), sep+"");
-			
-			while(token.hasMoreTokens())
-				sections[i].addSubSection(token.nextToken());
-		}
-		
-		for(int i = 0; i < sections.length; i++)
-			for(int k = 0; k < sections[i].getSubStreamSize(); k++){
-				System.out.println("SubSection " + k + ":\n" + sections[i].getSubSection(k));
-			}
 
 	}
+	
+	public void create(World world, RayHandler handler){
+		for(int i = 0; i < sections.length; i++)
+			if(sections[i] != null)
+				sections[i].create(world, handler);
+			
+	}
+	
 
 }

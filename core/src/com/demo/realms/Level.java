@@ -25,8 +25,8 @@ public class Level {
 	public Level(){
 		
 		realms = new Array<Realm>();
-		realms.add(new Realm("Realm1"));
-		realms.add(new Realm("Realm2"));
+		realms.add(new Realm("Realm1", Gdx.files.internal("example.lvl").file().getAbsolutePath()));
+		//realms.add(new Realm("Realm2"));
 		currentRealm = realms.get(realmIndex);
 		
 		players = new Array<Player>();
@@ -37,29 +37,6 @@ public class Level {
 			players.add(new Player(new Vector2(2, 3)));
 			players.get(players.size - 1).createBody(realm.getWorld());
 		}*/
-		BoxEntity entity = new BoxEntity(new Vector2(2, 1), new Vector2(1, .25f), BodyType.StaticBody);
-		entity.createBody(currentRealm.getWorld());
-		
-		entity = new BoxEntity(new Vector2(5, 1.75f), new Vector2(1, .25f), BodyType.StaticBody);
-		entity.createBody(currentRealm.getWorld());
-		
-		entity = new BoxEntity(new Vector2(5.5f, .75f), new Vector2(.5f, .15f), BodyType.StaticBody);
-		entity.createBody(currentRealm.getWorld());
-		
-		entity = new BoxEntity(new Vector2(7, -1.75f), new Vector2(1, .15f), BodyType.StaticBody);
-		entity.createBody(currentRealm.getWorld());
-		
-		entity = new BoxEntity(new Vector2(6, -.25f), new Vector2(1, .15f), BodyType.StaticBody);
-		entity.createBody(realms.get(1).getWorld());
-		
-		entity= new BoxEntity(new Vector2(3, 1), new Vector2(1, .5f), BodyType.StaticBody);
-		entity.createBody(realms.get(1).getWorld());
-		
-		
-		entity= new BoxEntity(new Vector2(3, -1), new Vector2(1, .25f), BodyType.StaticBody);
-		entity.createBody(realms.get(1).getWorld());
-		
-		
 		inputReciever = new InputReciever(players.get(realmIndex), this);
 		Gdx.input.setInputProcessor(inputReciever);
 		
@@ -90,7 +67,7 @@ public class Level {
 	}
 	
 	public void update(OrthographicCamera camera){
-		camera.position.set(players.get(realmIndex).getBody().getTransform().getPosition(), 0);
+		//camera.position.set(players.get(realmIndex).getBody().getTransform().getPosition(), 0);
 		
 		currentRealm.update(camera);
 		

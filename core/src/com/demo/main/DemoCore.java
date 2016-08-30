@@ -16,7 +16,6 @@ public class DemoCore extends ApplicationAdapter {
 	// Level stuff
 	private Level demoLevel;
 	
-	private LVLParser parse;
 	@Override
 	public void create() {
 
@@ -26,9 +25,7 @@ public class DemoCore extends ApplicationAdapter {
 
 		demoLevel = new Level();
 
-		parse = new LVLParser();
 		
-		parse.load("C:\\Users\\Owner\\Downloads\\example.lvl");
 		
 
 	}

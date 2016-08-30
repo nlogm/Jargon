@@ -12,6 +12,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.editor.box2D.constants.Helper;
 import com.editor.box2D.constants.WorldConstants;
 import com.editor.box2D.entity.BoxEntity;
+import com.engine.filemanager.parser.LVLParser;
 
 import box2dLight.RayHandler;
 
@@ -30,15 +31,16 @@ public class Realm {
 	private float frameTime;
 	private double accumulator;
 
-	public Realm(String realmID) {
+	private LVLParser parser;
+	
+	public Realm(String realmID, String filePath) {
 
 		// id to reference realm
 		this.realmID = realmID;
 
 		batch = new SpriteBatch();
-
 		render = new Box2DDebugRenderer();
-		
+
 		// Creates a world for which the rayhandler will render to
 		world = new World(new Vector2(0, -9.81f), true);
 
@@ -47,8 +49,12 @@ public class Realm {
 		handler.setAmbientLight(.5f);
 
 		handler.setShadows(true);
-		
-		
+
+		parser = new LVLParser();
+
+		parser.load(filePath);
+		parser.create(world, handler);
+
 	}
 
 	/**
@@ -84,9 +90,11 @@ public class Realm {
 	}
 
 	public void update(OrthographicCamera camera) {
-		//doPhysicsStep(Gdx.graphics.getDeltaTime());
-		world.step(1/60f, 6, 2);
+		// doPhysicsStep(Gdx.graphics.getDeltaTime());
+		world.step(1 / 60f, 6, 2);
 		batch.setProjectionMatrix(camera.combined);
+		handler.setCombinedMatrix(camera);
+		
 		handler.update();
 	}
 
@@ -95,8 +103,8 @@ public class Realm {
 		// refresh render buffer
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		Gdx.gl.glEnable(GL20.GL_BLEND);
-		//Gdx.gl.glBlendFunc(GL20.GL_DST_COLOR, GL20.GL_ZERO);
-		Gdx.gl.glClearColor(0, 0, 0, 0);
+		// Gdx.gl.glBlendFunc(GL20.GL_DST_COLOR, GL20.GL_ZERO);
+		Gdx.gl.glClearColor(0, 0, 0, 1);
 
 		render.render(world, camera.combined);
 
