@@ -1,5 +1,7 @@
 package com.demo.realms;
 
+import java.io.File;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -33,7 +35,7 @@ public class Realm {
 
 	private LVLParser parser;
 	
-	public Realm(String realmID, String filePath) {
+	public Realm(String realmID, File file) {
 
 		// id to reference realm
 		this.realmID = realmID;
@@ -52,7 +54,7 @@ public class Realm {
 
 		parser = new LVLParser();
 
-		parser.load(filePath);
+		parser.load(file);
 		parser.create(world, handler);
 
 	}

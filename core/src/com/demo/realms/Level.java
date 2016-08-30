@@ -25,7 +25,7 @@ public class Level {
 	public Level(){
 		
 		realms = new Array<Realm>();
-		realms.add(new Realm("Realm1", Gdx.files.internal("example.lvl").file().getAbsolutePath()));
+		realms.add(new Realm("Realm1", Gdx.files.internal("example.lvl").file()));
 		//realms.add(new Realm("Realm2"));
 		currentRealm = realms.get(realmIndex);
 		

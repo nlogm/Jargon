@@ -24,21 +24,21 @@ public class LVLParser {
 
 	}
 
-	public void load(String fileName) {
-		String tmp = fileName.substring(fileName.indexOf("desktop\\") + "desktop\\".length(), fileName.length());
+	public void load(File lvlFile) {
+	/*	String tmp = fileName.substring(fileName.indexOf("desktop\\") + "desktop\\".length(), fileName.length());
 		System.out.println(tmp);
 		fileName = fileName.substring(0, fileName.indexOf(tmp)) + "bin\\" + tmp;
 		if (!(fileName.charAt(fileName.length() - extension.length()) == '.')) {
 			fileName += extension;
-		}
+		}*/
 
 		String stream = "";
 		Scanner stackScan = null;
 		try {
-			stackScan = new Scanner(new File(fileName));
+			stackScan = new Scanner(lvlFile);
 
 		} catch (FileNotFoundException e) {
-			System.out.println("Couldn't find: " + fileName);
+			System.out.println("Couldn't find: " + lvlFile.getAbsolutePath());
 			e.printStackTrace();
 		}
 
