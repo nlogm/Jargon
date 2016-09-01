@@ -5,14 +5,12 @@ import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.World;
 import com.editor.box2D.constants.Scaler;
 import com.editor.box2D.entity.BoxEntity;
 
-import box2dLight.PointLight;
 import box2dLight.RayHandler;
 
 public class Section {
@@ -21,12 +19,14 @@ public class Section {
 
 	private String name, contents;
 	private ArrayList<String> subSection = new ArrayList<String>();
+	private ArrayList<LightStruct> lights = new ArrayList<LightStruct>();
 
 	private static final String regex_x = "x:(.*?),";
 	private static final String regex_y = "y:(.*?),";
 	private static final String regex_width = "width:(.*?),";
 	private static final String regex_height = "height:(.*?),";
-	private static final String regex_col = "color:(.*?),";
+	private static final String regex_col_named = "color:(.*?),";
+	private static final String regex_col_valued = "color: rgba\\((.*?)\\),";
 	private static final String regex_type = "(?i)type:(.*?)(?i)\\n";
 
 	public Section() {
@@ -42,12 +42,12 @@ public class Section {
 		subSection.addAll(Arrays.asList("", "", "", ""));
 		for (int i = 0, k = 0; i < contents.length(); i++) {
 
-			if(i+3 < contents.length())
-			if (contents.substring(i, i + 3).equals("---")) {
-				i += 3;
-				k++;
-				tmp = "";
-			}
+			if (i + 3 < contents.length())
+				if (contents.substring(i, i + 3).equals("---")) {
+					i += 3;
+					k++;
+					tmp = "";
+				}
 			tmp += contents.substring(i, i + 1);
 			subSection.set(k, tmp);
 
@@ -59,98 +59,118 @@ public class Section {
 		if (this.name.equals("Lights")) {
 			for (int i = 0; i < subSection.size(); i++) {
 				System.out.println("\nSection " + i + ":\n");
-				
+
 				Pattern p = Pattern.compile(regex_x);
 				Matcher m = p.matcher(subSection.get(i));
-				m.find();
-				
-				
-				float x = Float.parseFloat(m.group(1).replaceAll("\\s+", ""));
-				System.out.println(x);
+				float x = 0;
+				if (m.find())
+					x = Float.parseFloat(m.group(1).replaceAll("\\s+", ""));
+				else
+					try {
+						throw new LVL_Exception("Light-x");
+					} catch (LVL_Exception e) {
+						e.printStackTrace();
+					}
+
 				p = Pattern.compile(regex_y);
 				m = p.matcher(subSection.get(i));
-				m.find();
-				float y = Float.parseFloat(m.group(1).replaceAll("\\s+", ""));
+				float y = 0;
+				if (m.find())
+					y = Float.parseFloat(m.group(1).replaceAll("\\s+", ""));
+				else
+					try {
+						throw new LVL_Exception("Light-y");
+					} catch (LVL_Exception e) {
+						e.printStackTrace();
+					}
 
-				p = Pattern.compile(regex_col);
+				p = Pattern.compile(regex_col_valued, Pattern.DOTALL);
 				m = p.matcher(subSection.get(i));
-				m.find();
-
+				String col = "";
+				char colType = 0;
+				if (m.find()) {
+					col = m.group(1);
+					colType = LightStruct.color_type_floats;
+				} else {
+					p = Pattern.compile(regex_col_named);
+					m = p.matcher(subSection.get(i));
+					if (m.find()) {
+						col = m.group(1);
+						colType = LightStruct.color_type_name;
+					} else
+						try {
+							throw new LVL_Exception("Light-Color");
+						} catch (LVL_Exception e) {
+							e.printStackTrace();
+						}
+				}
 				p = Pattern.compile(regex_type, Pattern.DOTALL);
 				m = p.matcher(subSection.get(i));
 				m.find();
-				decipherLightType(m.group(1));
-				System.out.println("Creating Light at (" + x / Scaler.PPM + ", " + y / Scaler.PPM + ")");
-				PointLight light = new PointLight(handler, 50, Color.PURPLE, 1, x / Scaler.PPM, y / Scaler.PPM);
+
+				lights.add(new LightStruct(x, y, col + colType, m.group(1)));
 			}
 
 		}
 		if (this.name.equals("Bodies")) {
 			for (int i = 0; i < subSection.size(); i++) {
 				System.out.println("\nSection " + i + ":\n");
-				
+
 				Pattern p = Pattern.compile(regex_x);
 				Matcher m = p.matcher(subSection.get(i));
 				float x = 0;
-				if(m.find())
+				if (m.find())
 					x = Float.parseFloat(m.group(1).replaceAll("\\s+", ""));
-				
 
-				
 				p = Pattern.compile(regex_y);
 				m = p.matcher(subSection.get(i));
 				m.find();
-				
+
 				float y = Float.parseFloat(m.group(1).replaceAll("\\s+", ""));
 
 				p = Pattern.compile(regex_width);
 				m = p.matcher(subSection.get(i));
 				m.find();
-				
+
 				float w = Float.parseFloat(m.group(1).replaceAll("\\s+", ""));
 
-				
 				p = Pattern.compile(regex_height);
 				m = p.matcher(subSection.get(i));
 				m.find();
-				
-				float h = Float.parseFloat(m.group(1).replaceAll("\\s+", ""));
 
+				float h = Float.parseFloat(m.group(1).replaceAll("\\s+", ""));
 
 				p = Pattern.compile(regex_type, Pattern.DOTALL);
 				m = p.matcher(subSection.get(i));
 				m.find();
 				System.out.println("Creating Body at (" + x / Scaler.PPM + ", " + y / Scaler.PPM + ")");
-				BoxEntity entity = new BoxEntity(new Vector2(x / Scaler.PPM, y / Scaler.PPM), new Vector2(w / Scaler.PPM,
-						h / Scaler.PPM), decipherBodyType(m.group(1)));
+				BoxEntity entity = new BoxEntity(new Vector2(x / Scaler.PPM, y / Scaler.PPM), new Vector2(w / Scaler.PPM, h / Scaler.PPM), decipherBodyType(m.group(1)));
 				entity.createBody(world);
-				
+
 			}
+		}
+		
+		for(LightStruct light : lights){
+			light.create(handler);
 		}
 
 	}
-	
-	private void decipherLightType(String type){
-		type = type.replaceAll("\\s+", "");
-		type = type.replaceAll("_light", "");
-		System.out.println("Type:" + type);
-		
-	}
-	
-	private BodyType decipherBodyType(String type){
+
+	private BodyType decipherBodyType(String type) {
 		type = type.replaceAll("\\s+", "");
 		System.out.println("Type:" + type);
-		switch(type){
-			case "dynamic":{
-				return BodyType.DynamicBody;
-			}
-			case "kinematic":{
-				return BodyType.KinematicBody;
-			}
-			case "static":{
-				return BodyType.StaticBody;
-			}
-			default: return null;
+		switch (type) {
+		case "dynamic": {
+			return BodyType.DynamicBody;
+		}
+		case "kinematic": {
+			return BodyType.KinematicBody;
+		}
+		case "static": {
+			return BodyType.StaticBody;
+		}
+		default:
+			return null;
 		}
 	}
 

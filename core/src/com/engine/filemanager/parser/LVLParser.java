@@ -7,6 +7,7 @@ import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.physics.box2d.World;
 
 import box2dLight.RayHandler;
@@ -19,9 +20,9 @@ public class LVLParser {
 	public static final char end_sub_section = '-';
 	public static final String NEW_LINE = System.getProperty("line.seperator");
 	private Section sections[];
-
+	
 	public LVLParser() {
-
+		
 	}
 
 	public void load(File lvlFile) {
