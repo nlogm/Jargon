@@ -20,7 +20,7 @@ type: directional_light
 id: 3,
 x: 400,
 y: 400,
-color: cyan,
+color: purple,
 type: cone_light
 
 ---

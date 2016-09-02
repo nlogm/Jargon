@@ -1,5 +1,11 @@
 package com.engine.filemanager.parser;
 
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.editor.box2D.constants.Scaler;
 
@@ -18,7 +24,7 @@ public class LightStruct {
 	public static final char color_type_floats = '!';
 
 	private float x, y;
-	private int rgba8888;
+	private long rgba8888;
 	private String type;
 	private float[] colorValues;
 	private String color;
@@ -117,6 +123,8 @@ public class LightStruct {
 		streamLog += "Done!\n";
 		
 		streamLog += "Parsing from String values to floats...";
+		
+		System.out.println(streamLog);
 		for(int i = 0; i < stringRepresentation.length; i++){
 			this.colorValues[i] = Float.parseFloat(stringRepresentation[i]);
 		}
@@ -128,7 +136,48 @@ public class LightStruct {
 
 	private void recieveValuesName(String cleaned) {
 		streamLog += "\nCleaned color string to: " + color + "\nExtracting values from color name to Color Data..";
-		lightColor = Color.BLUE;
+		cleaned = cleaned.toUpperCase();
+		String stream = "";
+		Scanner stackScan = null;
+		
+		String value = "";
+		
+		try {
+			stackScan = new Scanner(Gdx.files.internal("ColorDictionary.txt").file());
+
+		} catch (FileNotFoundException e) {
+			System.out.println("Couldn't find: " + Gdx.files.internal("color").file().getAbsolutePath());
+			e.printStackTrace();
+		}
+
+		while (stackScan.hasNextLine()) {
+			stream += stackScan.nextLine() + "\n";
+		}
+		int startIndex = 0;
+		if(stream.contains(cleaned.toUpperCase())){
+			startIndex = stream.indexOf(cleaned.toUpperCase());
+		}
+		
+		String tmp = stream.substring(startIndex, stream.length() - 1);
+		
+		Pattern p = Pattern.compile(cleaned + " = new Color\\((.*?)\\);");
+		Matcher m = p.matcher(tmp);
+		
+		if(m.find())
+			value = m.group(1);
+		
+		System.out.println(value);
+		
+		
+		
+		
+		if(!value.contains("x"))
+			recieveValuesRGBA(value);
+		else{
+			lightColor = Color.valueOf(value.substring("0x".length(), value.length() - 1));
+		}
+		
+		
 	}
 
 }
