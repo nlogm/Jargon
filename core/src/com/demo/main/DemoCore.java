@@ -2,6 +2,7 @@ package com.demo.main;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.demo.realms.Level;
@@ -29,6 +30,28 @@ public class DemoCore extends ApplicationAdapter {
 		
 
 	}
+	
+	public void cameraControllerForDoug(float speed){
+		if(Gdx.input.isKeyPressed(Keys.I)){
+			camera.translate(0, speed);
+		}
+		if(Gdx.input.isKeyPressed(Keys.K)){
+			camera.translate(0, -speed);
+		}
+		if(Gdx.input.isKeyPressed(Keys.J)){
+			camera.translate(-speed, 0);
+		}
+		if(Gdx.input.isKeyPressed(Keys.L)){
+			camera.translate(speed, 0);
+		}
+		if(Gdx.input.isKeyPressed(Keys.U)){
+			camera.zoom += speed / 10.0f;
+		}
+		if(Gdx.input.isKeyPressed(Keys.O)){
+			camera.zoom -= speed / 10.0f;
+		}
+		
+	}
 
 	@Override
 	public void render() {
@@ -36,6 +59,7 @@ public class DemoCore extends ApplicationAdapter {
 		// ===========Update==============
 		// ===============================
 		camera.update();
+		cameraControllerForDoug(0.1f);
 		
 		
 		demoLevel.update(camera);

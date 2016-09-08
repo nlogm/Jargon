@@ -61,12 +61,14 @@ public class LightStruct {
 		case directional_light: {
 			streamLog += "type is " + directional_light + "\n";
 			PointLight p = new PointLight(handler, 50, lightColor, 1, x, y);
+			p.setSoftnessLength(0);
 			break;
 		}
 		case cone_light: {
 			streamLog += "type is " + cone_light + "\n";
 			ConeLight coneLight = new ConeLight(handler, 50, lightColor, 10, x, y, 0, 15);
 			coneLight.setDirection(-90);
+			coneLight.setSoftnessLength(0);
 			break;
 		}
 		case point_light: {
