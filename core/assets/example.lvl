@@ -1,63 +1,73 @@
 # Lights
 
 id: 1,
-x: 25,
-y: 25,
+x: 100,
+y: 500,
 radius: 100,
-color: blue,
+color: white,
 type: point_light
 
 ---
 
-id: 2,
-x: 20,
-y: 100,
-color: rgba(1,2,3,.5),
-type: directional_light
-
----
-
 id: 3,
-x: 400,
-y: 400,
-color: purple,
-type: cone_light
+x: 300,
+y: 500,
+color: white,
+type: point_light
 
 ---
 
 id: 4,
-x: 4000,
-y: 5000,
-color: red,
-type: chain_light
+x: 700,
+y: 500,
+color: white,
+type: point_light
 
 ***
 
 #Bodies
 
 id: 1,
-x: 40,
-y: 250,
-width: 10,
+x: 0,
+y: 0,
+width: 500,
 height: 10,
 type: static
 
----
+--- 
 
 id: 2,
-x: 400,
-y: 250,
-width: 10,
-height: 10,
-type: kinematic
+x: 1500,
+y: -300,
+width: 15,
+height: 300,
+type: static
 
 --- 
 
 id: 3,
-x: 23,
-y: 23,
-width: 230,
-height: 23,
+x: 1000,
+y: 0,
+width: 500,
+height: 10,
+type: static
+
+--- 
+
+id: 4,
+x: 1550,
+y: -200,
+width: 30,
+height: 10,
+type: static
+
+--- 
+
+id: 5,
+x: 1550,
+y: -500,
+width: 30,
+height: 10,
 type: static
 
 ***
