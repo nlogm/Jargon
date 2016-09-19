@@ -13,16 +13,24 @@ import box2dLight.ConeLight;
 import box2dLight.PointLight;
 import box2dLight.RayHandler;
 
+/**
+ * A class that contains some useless data on the lights
+ * 
+ * @author Luke Roche 9/19/2016
+ */
+
 public class LightStruct {
 
+	//tuples for token in .lvl
 	public static final String directional_light = "directional";
 	public static final String cone_light = "cone";
 	public static final String point_light = "point";
 	public static final String chain_light = "chain";
-
+	//more light tokens
 	public static final char color_type_name = '<';
 	public static final char color_type_floats = '!';
 
+	//types of tokens to be expected in a .lvl
 	private float x, y;
 	private long rgba8888;
 	private String type;
@@ -30,7 +38,7 @@ public class LightStruct {
 	private String color;
 	private Color lightColor;
 	
-	
+	///the final log
 	private String streamLog = "";
 
 	public LightStruct(float worldX, float worldY, String color, String type) {
@@ -49,11 +57,17 @@ public class LightStruct {
 
 	}
 	
+	/**
+	 *this will create all the lights that will be parsed
+	 */
 	public void create(RayHandler handler){
 		determineLight(handler);
 		System.out.println(type + " placed at (" + x + ", " + y + ")");
 	}
-
+	
+	/**
+	 * Determines the type of light
+	 */
 	private void determineLight(RayHandler handler) {
 
 		streamLog += type + " is being analyzed..";
@@ -92,7 +106,10 @@ public class LightStruct {
 		}
 
 	}
-
+	
+	/**
+	 * determines the color light type
+	 */
 	private void determineColorType() {
 
 		streamLog += color + " is being analyzed..";
@@ -105,7 +122,10 @@ public class LightStruct {
 			recieveValuesRGBA(color = color.substring(0, color.length() - 1));
 		}
 	}
-
+	
+	/**
+	 * from the type, deciphers the actual color to rgba
+	 */
 	private void recieveValuesRGBA(String cleaned) {
 		streamLog += "Cleaned color string to: " + color + "\nExtracting float values from " + cleaned + "..\n";
 		
@@ -135,7 +155,10 @@ public class LightStruct {
 		int i = 0;
 		lightColor = new Color(colorValues[i++], colorValues[i++], colorValues[i++], colorValues[i]);
 	}
-
+	
+	/**
+	 * from the cleaned section it finds what color it is by name
+	 */
 	private void recieveValuesName(String cleaned) {
 		streamLog += "\nCleaned color string to: " + color + "\nExtracting values from color name to Color Data..";
 		cleaned = cleaned.toUpperCase();
