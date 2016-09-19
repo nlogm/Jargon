@@ -9,6 +9,12 @@ import com.demo.realms.Level;
 import com.editor.box2D.constants.Scaler;
 import com.engine.filemanager.parser.LVLParser;
 
+/**
+ * The core file for the Demo
+ * 
+ * @author Luke Roche 9/19/2016
+ */
+
 public class DemoCore extends ApplicationAdapter {
 
 	// LibGDX Object references
@@ -31,6 +37,10 @@ public class DemoCore extends ApplicationAdapter {
 
 	}
 	
+	/**
+	 * Gives Doug the ability to modify the camera
+	 * to check the level parsing
+	 */
 	public void cameraControllerForDoug(float speed){
 		if(Gdx.input.isKeyPressed(Keys.I)){
 			camera.translate(0, speed);
