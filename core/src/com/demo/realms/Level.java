@@ -12,15 +12,29 @@ import com.editor.box2D.entity.Player;
 import com.editor.listeners.InputReciever;
 import com.editor.listeners.collision.CollisionReciever;
 
+
+/**
+ * This class is used to hold all the different realms
+ * and other objects used for rendering and updating
+ * 
+ * @author Luke Roche 9/19/2016
+ */
+
 public class Level {
 	
+	//array of realms and players
 	private Array<Realm> realms;
 	private Array<Player> players;
+	//lambda test usage
 	private List<Realm> levelRealms;
+	//the current realm
 	private Realm currentRealm;
+	//the current realms index in the list
 	private int realmIndex = 0;
 	
-	InputReciever inputReciever;
+	//input handler
+	private InputReciever inputReciever;
+	//collision handler
 	private CollisionReciever collisionReciever;
 	public Level(){
 		
@@ -47,6 +61,7 @@ public class Level {
 	
 	private Player tmpPlayer;
 	public void switchRealm(){
+		//when switching, we need to swap safely
 		tmpPlayer = players.get(realmIndex);
 		if(realmIndex < realms.size - 1){
 			realmIndex ++;
@@ -54,6 +69,7 @@ public class Level {
 			realmIndex = 0;
 		
 		
+		//this all makes sure everything that needs to be updated upon switch is
 		currentRealm = realms.get(realmIndex);
 		currentRealm.getWorld().setContactListener(collisionReciever);
 		inputReciever.setPlayer(players.get(realmIndex));
