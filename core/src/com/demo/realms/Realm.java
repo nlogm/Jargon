@@ -18,6 +18,15 @@ import com.engine.filemanager.parser.LVLParser;
 
 import box2dLight.RayHandler;
 
+
+/**
+ * The Realm class is used for having different environments inside 
+ * of a single state to accomplish that multiple realm
+ * feel for pariah
+ * 
+ * @author Luke Roche 9/19/2016
+ */
+
 public class Realm {
 
 	// Box2D objects
