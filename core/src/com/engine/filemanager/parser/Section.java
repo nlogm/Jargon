@@ -13,14 +13,23 @@ import com.editor.box2D.entity.BoxEntity;
 
 import box2dLight.RayHandler;
 
-public class Section {
+/**
+ * A section within the .lvl format
+ * 
+ * @author Luke Roche 9/19/2016
+ */
 
+public class Section {
+	
+	//seperator
 	public static final char sep = '-';
 
+	//objects for finding tokens
 	private String name, contents;
 	private ArrayList<String> subSection = new ArrayList<String>();
 	private ArrayList<LightStruct> lights = new ArrayList<LightStruct>();
 
+	//regex for seperating tokens
 	private static final String regex_x = "x:(.*?),";
 	private static final String regex_y = "y:(.*?),";
 	private static final String regex_width = "width:(.*?),";
