@@ -12,6 +12,12 @@ import com.badlogic.gdx.physics.box2d.World;
 
 import box2dLight.RayHandler;
 
+/**
+ * Populates sections which will parse themselves based on the token id given
+ * 
+ * @author Luke Roche 9/19/2016
+ */
+
 public class LVLParser {
 
 	private final String extension = ".lvl";
@@ -51,7 +57,9 @@ public class LVLParser {
 		populateSections(stream);
 
 	}
-
+	/**
+	 * begins populating all the sections for the parsing from LightStruct.java
+	 */
 	private void populateSections(String streamData) {
 		char start = '#';
 		int count = 0;
