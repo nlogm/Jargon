@@ -20,6 +20,14 @@ import com.editor.box2D.constants.BodyReferences;
 import com.editor.box2D.constants.Helper;
 import com.editor.listeners.collision.FixtureData;
 
+/**
+ * 
+ * Body Factory for building box2d bodies through a static function that
+ * returns a list of items that can be referenced by there index
+ * 
+ * @author Luke Roche
+ */
+
 public class BodyCreator {
 
 	private static Vector2 MAX_SENSOR_SIZE = new Vector2(.05f, .05f);
