@@ -1,5 +1,11 @@
 package com.editor.listeners.collision;
 
+/**
+ * ==========================
+ * ====    Data Tuple    ====
+ * ====    for fixtures  ====
+ * ==========================
+ */
 public class FixtureData {
 
 	public static final int PLAYER_MASK = 1;
