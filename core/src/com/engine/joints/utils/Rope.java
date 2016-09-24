@@ -12,6 +12,15 @@ import com.editor.box2D.bodies.BodyCreator;
 import box2dLight.ConeLight;
 import box2dLight.PointLight;
 
+
+/**
+ * ============================
+ * ==  Rope is a nice looking =
+ * ==  rope with realtime  ====
+ * ==  Box2D physics inside ===
+ * ============================
+ */
+
 public class Rope {
 
 	private Vector2 position;
