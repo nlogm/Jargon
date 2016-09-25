@@ -12,7 +12,7 @@ The main purpose of JARGON is to give anyone the ability to create and design be
 2. Clone the Jargon repo: `git clone https://github.com/nlogm/Jargon`
 3. Go into Eclipse
 4. Click `File` -> `import` -> `Gradle Project` -> Enter path to where you downloaded JARGON
-5. Run the program from Desktop Launcher, if there are errors go to Step 5
+5. Run the program from Desktop Launcher, if there are errors go to Step 6
 6. Click `Run` -> `Run Configurations`
 7. Highlight your build (May be "DesktopLauncher")
 8. Click `Arguments`
