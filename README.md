@@ -17,7 +17,7 @@ The main purpose of JARGON is to give anyone the ability to create and design be
 7. Highlight your build (May be "DesktopLauncher")
 8. Click `Arguments`
 9. Under `Working Directories:"`, select `other`
-10. Paste this `${workspace_loc:IntroScreen-desktop/assets}` into the `other` space
+10. Paste this `${workspace_loc:MyProjectName-desktop/assets}` into the `other` space
 
 ###Terminal
 1. `cd` into the directory of where you would like to download JARGON
